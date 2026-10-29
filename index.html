@@ -73,7 +73,16 @@
   }
   @keyframes blink { 50% { opacity: 0; } }
 
-  .tagline { color: var(--dim); margin: 0.5rem 0 2rem; }
+  .tagline { margin: 0.5rem 0 2rem; }
+  .tagline .callout { color: var(--dim); display: block; }
+  .tagline { user-select: none; }
+  .tagline.glitch { animation: glitch 0.3s steps(2); }
+  @keyframes glitch {
+    0%   { transform: translate(-3px, 1px); opacity: 0.4; }
+    33%  { transform: translate(3px, -1px); }
+    66%  { transform: translate(-1px, 0); opacity: 0.8; }
+    100% { transform: none; opacity: 1; }
+  }
 
   .ig { font-size: 1.4rem; }
 
@@ -104,8 +113,19 @@
   .events .title { text-transform: uppercase; }
   .events .info { color: var(--dim); display: block; }
 
+  /* ---------- discord ---------- */
+  .discord {
+    display: inline-block;
+    background: var(--green);
+    color: var(--bg);
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    text-shadow: none;
+  }
+  .discord:hover { background: var(--bg); color: var(--green); outline: 1px solid var(--green); }
+
   /* ---------- mailing list ---------- */
-  form { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  form { display: block; }
 
   input[type="email"] {
     flex: 1 1 240px;
@@ -129,7 +149,11 @@
   }
   button:hover { background: var(--bg); color: var(--green); outline: 1px solid var(--green); }
 
-  .status { margin-top: 1rem; min-height: 1.5em; }
+  .formkit-fields { display: flex; flex-wrap: wrap; gap: 0.75rem; width: 100%; }
+  .formkit-alert { list-style: none; margin-bottom: 1rem; }
+  .formkit-alert:empty { display: none; }
+  .formkit-alert-error { color: #ff5555; }
+  .formkit-alert-success { color: var(--green); }
 
   footer {
     text-align: center;
@@ -157,10 +181,10 @@
   <!-- ===== TOP SCREEN ===== -->
   <section id="home">
     <h1>HYPERFRIED<span class="cursor"></span></h1>
-    <p class="tagline">experimental theater &amp; performance space</p>
+    <p class="tagline" id="tagline">foul experiments.<span class="callout">where you at, san diego?</span></p>
 
     <!-- EDIT: put your Instagram handle here -->
-    <a class="ig" href="https://instagram.com/YOUR_HANDLE" target="_blank" rel="noopener">Instagram</a>
+    <a class="ig" href="https://www.instagram.com/hyperfriedd/" target="_blank" rel="noopener">Instagram</a>
 
     <a class="scroll-hint" href="#events">upcoming events &darr;</a>
   </section>
@@ -194,16 +218,26 @@
     </ul>
   </section>
 
-  <!-- ===== MAILING LIST ===== -->
+  <!-- ===== MAILING LIST (Kit) ===== -->
   <section id="mailing-list">
     <h2>Join the Mailing List</h2>
 
-    <!-- EDIT: set action="" to your signup service URL (see notes) -->
-    <form id="signup" action="" method="POST">
-      <input type="email" name="email" placeholder="your email" required>
-      <button type="submit">Sign Up</button>
+    <!-- Kit form 10115509. Kit's script (loaded at the bottom) handles the signup. -->
+    <form id="signup" action="https://app.kit.com/forms/10115509/subscriptions" class="seva-form formkit-form" method="post"
+          data-sv-form="10115509" data-uid="df2d93803e" data-format="inline" data-version="5"
+          data-options='{"settings":{"after_subscribe":{"action":"message","success_message":"thanks! check your email to confirm.","redirect_url":""},"powered_by":{"show":false},"recaptcha":{"enabled":false}},"version":"5"}'>
+      <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul>
+      <div data-element="fields" class="seva-fields formkit-fields">
+        <input class="formkit-input" type="email" name="email_address" aria-label="Email" placeholder="your email" required>
+        <button data-element="submit" class="formkit-submit"><span>Sign Up</span></button>
+      </div>
     </form>
-    <p class="status" id="status"></p>
+  </section>
+
+  <!-- ===== DISCORD ===== -->
+  <section id="discord">
+    <h2>Volunteer</h2>
+    <a class="discord" href="https://discord.gg/EWd8YfMrQr" target="_blank" rel="noopener">Join the Organizing Crew</a>
   </section>
 
   <footer>
@@ -308,34 +342,41 @@
   })();
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  const form = document.getElementById("signup");
-  const status = document.getElementById("status");
+  // ---------- random tagline ----------
+  // EDIT: add, remove, or change lines here. [top line, bottom line]
+  const taglines = [
+    ["foul experiments.", "where you at, san diego?"],
+    ["deep fried art.", "served hot in san diego."],
+    ["something awful is cooking.", "san diego, pull up."],
+    ["overcooked on purpose.", "san diego, dig in."],
+    ["hot oil. loud noise.", "san diego, you in?"],
+    ["fried beyond recognition.", "calling all san diego freaks."],
+    ["strange things happen here.", "san diego, come find out."],
+    ["no rules, just jams.", "san diego, show up."],
+    ["dirty signal detected.", "over & outttttt."],
+    ["weird frequencies.", "tune in, san diego."]
+  ];
+  const tagline = document.getElementById("tagline");
+  let current = -1;
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    status.textContent = "sending...";
+  function showTagline() {
+    let next;
+    do { next = Math.floor(Math.random() * taglines.length); } while (next === current);
+    current = next;
+    tagline.firstChild.textContent = taglines[current][0];
+    tagline.querySelector(".callout").textContent = taglines[current][1];
+  }
+  showTagline();
 
-    // No signup service configured yet — just show a confirmation
-    if (!form.action || form.getAttribute("action") === "") {
-      status.textContent = "thanks! (demo mode — no signup service connected yet)";
-      form.reset();
-      return;
-    }
-
-    try {
-      const res = await fetch(form.action, {
-        method: "POST",
-        body: new FormData(form),
-        headers: { "Accept": "application/json" }
-      });
-      status.textContent = res.ok
-        ? "thanks! you are on the list."
-        : "something went wrong, please try again.";
-      if (res.ok) form.reset();
-    } catch {
-      status.textContent = "something went wrong, please try again.";
-    }
+  // easter egg: click the tagline for a new one (with a quick glitch)
+  tagline.addEventListener("click", () => {
+    tagline.classList.remove("glitch");
+    void tagline.offsetWidth; // restart the animation
+    tagline.classList.add("glitch");
+    showTagline();
   });
+
 </script>
+<script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
 </body>
 </html>
