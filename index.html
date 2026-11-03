@@ -125,6 +125,43 @@
   }
   .discord:hover { background: var(--bg); color: var(--green); outline: 1px solid var(--green); }
 
+  /* ---------- soundproofing by (Evan's Handy Services, Y2K style) ---------- */
+  .evan-box {
+    display: block;
+    width: 320px;
+    max-width: 100%;
+    background: #c0c0c0;
+    border: 3px outset #fff;
+    color: #000;
+    text-decoration: none;
+    text-shadow: none;
+    font-family: Tahoma, Arial, sans-serif;
+    transition: transform 0.1s;
+  }
+  .evan-box:hover { background: #c0c0c0; color: #000; transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--dim); }
+  .evan-box:active { border-style: inset; transform: none; box-shadow: none; }
+  .evan-box .titlebar {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 3px 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .evan-box .titlebar span:last-child { background: #c0c0c0; color: #000; border: 2px outset #fff; padding: 0 4px; font-size: 10px; }
+  .evan-box .inner { display: flex; align-items: center; gap: 10px; padding: 10px; }
+  .evan-box img { width: 70px; }
+  .evan-box .name {
+    font-family: Impact, "Arial Black", sans-serif;
+    font-size: 22px;
+    color: #ffff00;
+    text-shadow: 2px 2px 0 #ff0000, 3px 3px 0 #000;
+    line-height: 1.1;
+  }
+  .evan-box .slogan { font-family: "Comic Sans MS", cursive; font-size: 13px; color: #000080; }
+  .evan-box .enter { display: block; text-align: center; background: #000080; color: #ffff00; font: bold 14px "Courier New", monospace; padding: 4px; }
+
   /* ---------- mailing list ---------- */
   form { display: block; }
 
@@ -241,6 +278,22 @@
   <section id="discord">
     <h2>Volunteer</h2>
     <a class="discord" href="https://discord.gg/EWd8YfMrQr" target="_blank" rel="noopener">Join the Organizing Crew</a>
+  </section>
+
+  <!-- ===== SOUNDPROOFING BY ===== -->
+  <section id="soundproofing">
+    <h2>Soundproofing by</h2>
+    <a class="evan-box" href="../evan-handyman-site/index.html">
+      <div class="titlebar"><span>EvansHandyServices.html</span><span>X</span></div>
+      <div class="inner">
+        <img src="../evan-handyman-site/img/evan_head.png" alt="Evan">
+        <div>
+          <div class="name">🔨 EVAN'S HANDY SERVICES</div>
+          <div class="slogan">No Job Too Small!!!</div>
+        </div>
+      </div>
+      <span class="enter">&gt;&gt; ENTER SITE &lt;&lt;</span>
+    </a>
   </section>
 
   <footer>
