@@ -1,0 +1,386 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>~*~ EVAN'S HANDY SERVICES ~*~ No Job Too Small!!!</title>
+<!-- Welcome to the source code, fellow webmaster. There are 4 secrets on this page. Good luck. -->
+<style>
+  body {
+    margin: 0;
+    font-family: "Times New Roman", Times, serif;
+    color: #000;
+    /* classic tiled starry background */
+    background-color: #000033;
+    background-image:
+      radial-gradient(#fff 1px, transparent 1.5px),
+      radial-gradient(#ffff99 1px, transparent 1.5px);
+    background-size: 60px 60px, 90px 90px;
+    background-position: 0 0, 30px 45px;
+  }
+  a { color: #0000ee; }
+  a:visited { color: #551a8b; }
+
+  .page { width: 800px; max-width: 100%; margin: 0 auto; background: #c0c0c0; border: 4px outset #e0e0e0; }
+
+  /* header */
+  .header { background: linear-gradient(#000080, #1084d0); color: #fff; text-align: center; padding: 10px 6px 6px; }
+  .header h1 { margin: 0; font-family: Impact, "Arial Black", sans-serif; font-size: 44px; letter-spacing: 2px;
+               color: #ffff00; text-shadow: 3px 3px 0 #ff0000, 5px 5px 0 #000; }
+  .header .slogan { font-family: "Comic Sans MS", cursive; font-size: 18px; color: #00ffff; }
+  #hammer { display: inline-block; cursor: pointer; user-select: none; animation: wiggle 2s ease-in-out infinite; }
+  #hammer.whack { animation: whack 0.25s; }
+  @keyframes whack { 50% { transform: rotate(-50deg); } }
+
+  marquee { background: #000; color: #00ff00; font-family: "Courier New", monospace; font-size: 16px; padding: 3px 0; border-top: 2px solid #ffff00; border-bottom: 2px solid #ffff00; }
+
+  .blink { animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { visibility: hidden; } }
+  .rainbow { background: linear-gradient(90deg, red, orange, yellow, lime, cyan, blue, magenta); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: bold; }
+  hr.fancy { border: 0; height: 6px; background: linear-gradient(90deg, red, orange, yellow, lime, cyan, blue, magenta); }
+
+  /* layout table */
+  table.layout { width: 100%; border-collapse: collapse; }
+  td.nav { width: 170px; vertical-align: top; background: #008080; padding: 8px; border-right: 3px ridge #ccc; }
+  td.nav a { display: block; background: #c0c0c0; border: 3px outset #fff; margin: 0 0 6px; padding: 4px; text-align: center;
+             color: #000; text-decoration: none; font-family: "Comic Sans MS", cursive; font-size: 14px; }
+  td.nav a:active { border-style: inset; }
+  td.main { vertical-align: top; background: #ffffe0; padding: 12px 16px; }
+
+  h2 { font-family: "Arial Black", Arial, sans-serif; color: #800000; border-bottom: 2px dashed #800000; margin: 18px 0 8px; }
+  .new { background: red; color: yellow; font: bold 11px Arial, sans-serif; padding: 0 3px; vertical-align: middle; }
+
+  .construction { background: repeating-linear-gradient(45deg, #ffcc00 0 18px, #000 18px 36px); padding: 6px; margin: 10px 0; }
+  .construction div { background: #ffcc00; text-align: center; font: bold 16px "Arial Black", Arial, sans-serif; padding: 4px; }
+
+  .photo { float: right; margin: 0 0 8px 12px; border: 6px ridge #c0c0c0; width: 220px; }
+  .caption { font-size: 12px; font-style: italic; text-align: center; }
+
+  table.prices { border: 3px outset #ccc; background: #fff; border-collapse: separate; width: 100%; }
+  table.prices td, table.prices th { border: 2px inset #ccc; padding: 4px 6px; font-size: 15px; }
+  table.prices th { background: #000080; color: #fff; }
+
+  /* secret games cheat sheet */
+  .cheats { background: #000; color: #0f0; border: 4px ridge #ff00ff; padding: 8px 14px; font-family: "Courier New", monospace; font-size: 14px; }
+  .cheats h3 { color: #ff0; margin: 10px 0 4px; font-size: 16px; }
+  .cheats ol { margin: 0 0 6px; padding-left: 22px; }
+  .cheats a { color: #0ff; }
+  .cheats .done-tag { color: #ff0; font-weight: bold; display: none; }
+  .cheats .done .done-tag { display: inline; }
+  .cheats kbd { background: #333; border: 1px outset #888; padding: 0 4px; color: #fff; }
+
+  .testimonial { background: #fff; border: 2px dashed #999; padding: 6px 10px; margin: 6px 0; font-family: "Comic Sans MS", cursive; font-size: 14px; }
+
+  /* visitor counter */
+  #counter { display: inline-block; background: #000; border: 3px inset #888; padding: 2px 4px; cursor: pointer; }
+  #counter:hover { border-color: #ff0; box-shadow: 0 0 8px #ff0; }
+  #counter span { display: inline-block; width: 16px; margin: 0 1px; background: #222; color: #ff3333; font: bold 20px "Courier New", monospace; text-align: center; }
+
+  /* guestbook */
+  #guestbook-entries .entry { border-bottom: 1px dotted #999; padding: 4px 0; font-size: 14px; }
+  #guestbook-entries .entry b { color: #008000; }
+  .gb-form input, .gb-form textarea { font-family: "Courier New", monospace; font-size: 14px; }
+  .btn98 { font-family: Tahoma, Arial, sans-serif; font-size: 13px; background: #c0c0c0; border: 2px outset #fff; padding: 3px 12px; cursor: pointer; }
+  .btn98:active { border-style: inset; }
+
+  .footer { text-align: center; font-size: 12px; padding: 10px; background: #c0c0c0; }
+  .badges span { display: inline-block; border: 2px outset #fff; background: #000; color: #0f0; font: bold 10px Verdana, sans-serif; padding: 3px 5px; margin: 2px; }
+  #banana { display: inline-block; font-size: 20px; cursor: pointer; user-select: none; animation: bounce 1s ease-in-out infinite; }
+  @keyframes wiggle { 0%, 80%, 100% { transform: rotate(0); } 85% { transform: rotate(-20deg); } 90% { transform: rotate(15deg); } 95% { transform: rotate(-10deg); } }
+  @keyframes bounce { 50% { transform: translateY(-5px); } }
+
+  /* secret hints box */
+  .secret-box { background: #000; border: 3px ridge #ff00ff; color: #0f0; font-family: "Courier New", monospace; font-size: 13px; padding: 6px; margin-top: 10px; text-align: center; }
+  .secret-box button { margin-top: 4px; }
+  #hints { display: none; text-align: left; margin: 6px 0 0; padding-left: 16px; }
+  #hints li { margin-bottom: 4px; }
+  #hints li.done { color: #888; text-decoration: line-through; }
+
+  /* Windows 98 style popup for unlocked secrets */
+  #popup-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 50; }
+  #popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 340px; max-width: 92vw; background: #c0c0c0; border: 3px outset #fff; font-family: Tahoma, Arial, sans-serif; }
+  #popup .titlebar { background: linear-gradient(90deg, #000080, #1084d0); color: #fff; font-weight: bold; font-size: 13px; padding: 3px 6px; display: flex; justify-content: space-between; }
+  #popup .titlebar button { font: bold 11px Tahoma; padding: 0 5px; background: #c0c0c0; border: 2px outset #fff; cursor: pointer; }
+  #popup .body { padding: 14px; display: flex; gap: 12px; align-items: center; font-size: 14px; }
+  #popup .body img { width: 64px; }
+  #popup .buttons { text-align: center; padding: 0 0 12px; }
+
+  @media (max-width: 640px) {
+    td.nav { display: none; }
+    .photo { float: none; display: block; margin: 0 auto 8px; }
+    .header h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ===== HEADER ===== -->
+  <div class="header">
+    <h1><span id="hammer" title="whack me!">🔨</span> EVAN'S HANDY SERVICES 🔧</h1>
+    <div class="slogan">~*~ No Job Too Small!!! ~*~ Est. 1999 ~*~ Y2K Ready ~*~</div>
+  </div>
+  <marquee scrollamount="6">*** WELCOME TO MY HOME PAGE *** CALL 1-800-EVAN-FIX FOR A FREE ESTIMATE *** NOW ACCEPTING PAYMENT IN BANANAS *** 🎂 HAPPY BIRTHDAY EVAN!!! 🎂 *** NOW 100% Y2K COMPLIANT *** SIGN MY GUESTBOOK!!! ***</marquee>
+
+  <table class="layout">
+    <tr>
+      <!-- ===== SIDE NAV ===== -->
+      <td class="nav">
+        <a href="#about">🏠 Home</a>
+        <a href="#services">🛠️ Services</a>
+        <a href="#prices">💵 Prices</a>
+        <a href="#reviews">⭐ Reviews</a>
+        <a href="#guestbook">📖 Guestbook</a>
+        <a href="#secret-games">🎮 Secret Games</a>
+        <a href="mailto:evan@handyservices.example?subject=I%20need%20a%20handyman">📧 E-Mail Me</a>
+        <br>
+        <center>
+          <font face="Comic Sans MS" size="2" color="#ffff00">You are visitor #</font><br>
+          <div id="counter" title="hmm... click me?"></div><br>
+          <font face="Comic Sans MS" size="1" color="#ffff00">(click me!)</font>
+        </center>
+        <br>
+        <div class="secret-box">
+          <span class="blink">🕵️ 4 SECRETS</span><br>HIDDEN ON THIS PAGE!!!<br>
+          found: <b id="secrets-nav">0</b>/4<br>
+          <button class="btn98" type="button" id="hint-btn">Need a hint?</button>
+          <ul id="hints">
+            <li data-key="kong">🔨 That hammer up top looks like it wants to be used... a few times</li>
+            <li data-key="invasion">🎮 Gamers know the code: ↑↑↓↓←→←→BA</li>
+            <li data-key="clicker">🔢 Who's counting the visitors?</li>
+            <li data-key="snatch">🍌 Something bananas at the very bottom</li>
+          </ul>
+        </div>
+        <br>
+        <center><font face="Arial" size="1" color="#ffffff">Best viewed in<br>Netscape Navigator 4.0<br>at 800x600</font></center>
+      </td>
+
+      <!-- ===== MAIN ===== -->
+      <td class="main">
+
+        <div class="construction"><div>🚧 THIS SITE IS UNDER CONSTRUCTION 🚧</div></div>
+
+        <a name="about"></a>
+        <h2>Welcome!!! <span class="new">NEW!</span></h2>
+        <img class="photo" src="img/evan_photo.jpg" alt="Evan at work">
+        <p>Hi! My name is <b>EVAN</b> and welcome to my web site on the <i>Information Superhighway</i>!!!</p>
+        <p>I am a professional handyman with over <b>0 years</b> of experience. I can fix ANYTHING. If I can't fix it, it probably wasn't broken. <span class="blink">☎️ CALL NOW!!! ☎️</span></p>
+        <p>Pictured: me, fixing a pool table. It is now <u>slightly</u> less broken.</p>
+        <p class="caption" style="clear: both;">&nbsp;</p>
+
+        <a name="services"></a>
+        <h2>🛠️ Services</h2>
+        <ul>
+          <li>Pool Table Repair <span class="new">SPECIALTY!</span></li>
+          <li>Trash Can Arranging (blue AND green)</li>
+          <li>Leaky Faucets, Squeaky Doors, Wobbly Chairs</li>
+          <li>Shelf Hanging (shelves may be crooked)</li>
+          <li>Barrel Removal &amp; Ladder Inspection</li>
+          <li>Y2K Bug Extermination 🐛💻</li>
+          <li>Banana Storage Solutions 🍌</li>
+          <li>Making A Surprised Face At Your Problem 😮 <i>(free!)</i></li>
+        </ul>
+
+        <a name="prices"></a>
+        <h2>💵 Prices</h2>
+        <table class="prices">
+          <tr><th>Job</th><th>Price</th></tr>
+          <tr><td>Hourly rate</td><td>$19.99/hr</td></tr>
+          <tr><td>Pool table fixing</td><td>$40 + snacks</td></tr>
+          <tr><td>Looking at it and saying "hmm"</td><td>$5</td></tr>
+          <tr><td>Emergency call (before 10am)</td><td>no.</td></tr>
+          <tr><td>Your birthday</td><td><span class="rainbow">FREE!!!</span></td></tr>
+        </table>
+
+        <a name="reviews"></a>
+        <h2>⭐ What My Customers Say</h2>
+        <div class="testimonial">"Evan fixed my deck in only 3 days. It was a 20 minute job. 5 stars!!!" <br>— Linda, Escondido</div>
+        <div class="testimonial">"He showed up. Made that face. Left. The sink works now. I don't know how." <br>— Gary P.</div>
+        <div class="testimonial">"Best handyman on the World Wide Web." <br>— Evan's Mom</div>
+
+        <a name="secret-games"></a>
+        <h2>🎮 Secret Games <span class="new">CHEAT CODES!</span></h2>
+        <div class="cheats" id="cheats">
+          <p>Evan has hidden 4 mini games on this page. Here's how to find them:</p>
+
+          <div data-key="kong">
+            <h3>1. EVAN KONG 🦍 <span class="done-tag">✓ FOUND</span></h3>
+            <ol>
+              <li>Scroll to the very top of the page.</li>
+              <li>Click the 🔨 hammer next to "EVAN'S HANDY SERVICES" <b>3 times</b>.</li>
+              <li>Press <b>PLAY!</b> in the popup.</li>
+              <li>Controls: <kbd>←</kbd> <kbd>→</kbd> move, <kbd>↑</kbd> <kbd>↓</kbd> climb ladders, <kbd>space</kbd> jump. Keyboard needed.</li>
+            </ol>
+          </div>
+
+          <div data-key="invasion">
+            <h3>2. EVAN INVASION 🚀 <span class="done-tag">✓ FOUND</span></h3>
+            <ol>
+              <li>Click any empty part of the page (not a text box).</li>
+              <li>Type the secret code on your keyboard: <kbd>↑</kbd> <kbd>↑</kbd> <kbd>↓</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>B</kbd> <kbd>A</kbd></li>
+              <li>Press <b>PLAY!</b> in the popup.</li>
+              <li>Controls: arrows or <kbd>WASD</kbd> to fly, <kbd>space</kbd> to shoot. Keyboard needed.</li>
+            </ol>
+          </div>
+
+          <div data-key="clicker">
+            <h3>3. PRIMATE EVOLUTION 🍌 <span class="done-tag">✓ FOUND</span></h3>
+            <ol>
+              <li>Find the red "You are visitor #" counter in the left menu (on phones: <a href="#" class="open-egg" data-egg="clicker">tap here</a>).</li>
+              <li>Click the counter.</li>
+              <li>Press <b>PLAY!</b> in the popup.</li>
+              <li>Click Evan's head to pick bananas, then buy farms and factories. Works on phones!</li>
+            </ol>
+          </div>
+
+          <div data-key="snatch">
+            <h3>4. BANANDERSNATCH 📖 <span class="done-tag">✓ FOUND</span></h3>
+            <ol>
+              <li>Scroll all the way to the bottom of the page.</li>
+              <li>Click the bouncing 🍌 at the end of the copyright line.</li>
+              <li>Press <b>PLAY!</b> in the popup.</li>
+              <li>Type your name, then type your choices (like <i>run</i> or <i>climb tree</i>) and press submit. Works on phones!</li>
+            </ol>
+          </div>
+        </div>
+
+        <a name="guestbook"></a>
+        <h2>📖 Sign My Guestbook!!!</h2>
+        <div id="guestbook-entries"></div>
+        <form class="gb-form" id="gb-form">
+          <p>Name: <input id="gb-name" maxlength="40" required></p>
+          <p>Message:<br><textarea id="gb-msg" rows="3" cols="40" maxlength="300" required></textarea></p>
+          <button class="btn98" type="submit">Sign Guestbook</button>
+        </form>
+
+      </td>
+    </tr>
+  </table>
+
+  <hr class="fancy">
+
+  <!-- ===== FOOTER ===== -->
+  <div class="footer">
+    <div class="badges">
+      <span>Y2K COMPLIANT ✓</span><span>MADE WITH NOTEPAD</span><span>HTML 4.01</span><span>NO FRAMES!</span>
+    </div>
+    <p>&lt;&lt; <a href="#">Prev</a> | <a href="#">Handyman WebRing</a> | <a href="#">Random</a> | <a href="#">Next</a> &gt;&gt;</p>
+    <p>© 2000 Evan's Handy Services. All rights reserved. Not responsible for crooked shelves. <span id="banana" title="a banana?">🍌</span></p>
+    <p>🕵️ Secrets found: <b id="secrets">0</b>/4 — <a href="#" id="hint-link">need a hint?</a></p>
+    <p style="font-size:10px;color:#555;">Mini games adapted from <a href="https://github.com/ape-unit" target="_blank">Ape Unit</a>. Monkeys replaced with Evan.</p>
+  </div>
+</div>
+
+<!-- ===== SECRET POPUP ===== -->
+<div id="popup-bg">
+  <div id="popup">
+    <div class="titlebar"><span id="popup-title">Secret Found!</span><button type="button" id="popup-x">X</button></div>
+    <div class="body"><img src="img/evan_head.png" alt=""><div id="popup-text"></div></div>
+    <div class="buttons"><button class="btn98" id="popup-play" type="button">PLAY!</button> <button class="btn98" id="popup-cancel" type="button">Cancel</button></div>
+  </div>
+</div>
+
+<script>
+  // ---------- secrets / easter eggs ----------
+  const SECRETS = {
+    kong:     { title: "EVAN KONG unlocked!",     text: "You hammered the hammer! Evan is throwing barrels. Arrows to move, space to jump.", url: "games/ape-kong/index.html" },
+    invasion: { title: "EVAN INVASION unlocked!", text: "↑↑↓↓←→←→BA! Evan is flying through space. Arrows/WASD to move, space to shoot.", url: "games/ape-invasion/index.html" },
+    clicker:  { title: "PRIMATE EVOLUTION unlocked!", text: "You clicked the counter! Click Evan to pick bananas. Build an empire.", url: "games/evan-clicker/index.html" },
+    snatch:   { title: "BANANDERSNATCH unlocked!", text: "You found the banana! A choose-your-own-adventure. Beware of Evan.", url: "games/banandersnatch/index.html" }
+  };
+  const found = new Set(JSON.parse(localStorage.getItem("evanSecrets") || "[]"));
+  const secretsEl = document.getElementById("secrets");
+  function refreshSecrets() {
+    secretsEl.textContent = found.size;
+    document.getElementById("secrets-nav").textContent = found.size;
+    document.querySelectorAll("#hints li, #cheats [data-key]").forEach((el) => el.classList.toggle("done", found.has(el.dataset.key)));
+  }
+  refreshSecrets();
+  const hints = document.getElementById("hints");
+  document.getElementById("hint-btn").addEventListener("click", () => {
+    hints.style.display = hints.style.display === "block" ? "none" : "block";
+  });
+  document.getElementById("hint-link").addEventListener("click", (e) => {
+    e.preventDefault();
+    alert(Array.from(hints.children).map((li) => (found.has(li.dataset.key) ? "✓ " : "• ") + li.textContent).join("\n"));
+  });
+
+  const popupBg = document.getElementById("popup-bg");
+  let pendingUrl = null;
+  function unlock(key) {
+    const s = SECRETS[key];
+    found.add(key);
+    localStorage.setItem("evanSecrets", JSON.stringify([...found]));
+    refreshSecrets();
+    document.getElementById("popup-title").textContent = s.title;
+    document.getElementById("popup-text").textContent = s.text;
+    pendingUrl = s.url;
+    popupBg.style.display = "block";
+  }
+  function closePopup() { popupBg.style.display = "none"; }
+  document.getElementById("popup-play").addEventListener("click", () => { location.href = pendingUrl; });
+  document.getElementById("popup-cancel").addEventListener("click", closePopup);
+  document.getElementById("popup-x").addEventListener("click", closePopup);
+
+  // 1. click the hammer 3 times -> Evan Kong
+  let whacks = 0;
+  const hammer = document.getElementById("hammer");
+  hammer.addEventListener("click", () => {
+    hammer.classList.remove("whack"); void hammer.offsetWidth; hammer.classList.add("whack");
+    if (++whacks === 3) { whacks = 0; unlock("kong"); }
+  });
+
+  // 2. Konami code -> Evan Invasion
+  const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+  let pos = 0;
+  document.addEventListener("keydown", (e) => {
+    if (e.target.closest && e.target.closest("input, textarea")) return;
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    pos = key === konami[pos] ? pos + 1 : (key === konami[0] ? 1 : 0);
+    if (pos === konami.length) { pos = 0; unlock("invasion"); }
+  });
+
+  // 3. click the visitor counter -> Primate Evolution
+  const counter = document.getElementById("counter");
+  let visits = Number(localStorage.getItem("evanVisits") || 1336) + 1;
+  localStorage.setItem("evanVisits", visits);
+  counter.innerHTML = String(visits).padStart(7, "0").split("").map((d) => `<span>${d}</span>`).join("");
+  counter.addEventListener("click", () => unlock("clicker"));
+
+  // phones can't see the side menu, so the cheat sheet links straight to that egg
+  document.querySelectorAll(".open-egg").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); unlock(a.dataset.egg); }));
+
+  // 4. click the banana in the footer -> Banandersnatch
+  document.getElementById("banana").addEventListener("click", () => unlock("snatch"));
+
+  // ---------- guestbook (saved in this browser only) ----------
+  const seed = [
+    { name: "xXSkaterGirl2000Xx", msg: "cool site!!! u should add more gifs" },
+    { name: "Linda", msg: "Evan when are you coming back for the deck" },
+    { name: "webmaster@aol", msg: "nice table layout. very professional" }
+  ];
+  const entriesEl = document.getElementById("guestbook-entries");
+  let entries = JSON.parse(localStorage.getItem("evanGuestbook") || "null") || seed;
+  function renderGuestbook() {
+    entriesEl.innerHTML = "";
+    entries.forEach((e) => {
+      const div = document.createElement("div");
+      div.className = "entry";
+      const b = document.createElement("b");
+      b.textContent = e.name + ": ";
+      div.append(b, document.createTextNode(e.msg));
+      entriesEl.appendChild(div);
+    });
+  }
+  renderGuestbook();
+  document.getElementById("gb-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    entries.push({ name: document.getElementById("gb-name").value, msg: document.getElementById("gb-msg").value });
+    localStorage.setItem("evanGuestbook", JSON.stringify(entries));
+    renderGuestbook();
+    e.target.reset();
+  });
+</script>
+</body>
+</html>
