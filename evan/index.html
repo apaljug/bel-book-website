@@ -1,385 +1,428 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>~*~ EVAN'S HANDY SERVICES ~*~ No Job Too Small!!!</title>
-<!-- Welcome to the source code, fellow webmaster. There are 4 secrets on this page. Good luck. -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evan's Handy Services | Finish Carpentry &amp; Custom Woodwork in San Diego</title>
+<meta name="description" content="Custom arched doors, built-in shelving, kitchens, saunas, railings and outdoor carpentry in San Diego, designed and built by Evan.">
+<link rel="icon" href="img/logo.png">
 <style>
-  body {
-    margin: 0;
-    font-family: "Times New Roman", Times, serif;
-    color: #000;
-    /* classic tiled starry background */
-    background-color: #000033;
-    background-image:
-      radial-gradient(#fff 1px, transparent 1.5px),
-      radial-gradient(#ffff99 1px, transparent 1.5px);
-    background-size: 60px 60px, 90px 90px;
-    background-position: 0 0, 30px 45px;
+  :root {
+    --bg: #faf7f2;
+    --ink: #2b2b2b;
+    --muted: #6b645c;
+    --wood: #9a6235;
+    --navy: #1f3a5f;
+    --line: #e6dfd4;
+    --card: #fff;
   }
-  a { color: #0000ee; }
-  a:visited { color: #551a8b; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; font-weight: normal; line-height: 1.2; }
+  a { color: var(--navy); }
+  img { display: block; max-width: 100%; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 80px 0; scroll-margin-top: 72px; }
+  .eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 13px; color: var(--wood); font-weight: 600; margin: 0 0 8px; }
+  .section-title { font-size: 38px; margin: 0 0 16px; }
+  .lead { color: var(--muted); max-width: 640px; margin: 0 0 40px; }
 
-  .page { width: 800px; max-width: 100%; margin: 0 auto; background: #c0c0c0; border: 4px outset #e0e0e0; }
+  .btn { display: inline-block; padding: 12px 22px; border-radius: 4px; font-weight: 600; text-decoration: none; border: 2px solid var(--navy); background: var(--navy); color: #fff; cursor: pointer; font-size: 16px; }
+  .btn:hover { background: #172c48; border-color: #172c48; }
+  .btn.ghost { background: transparent; color: #fff; border-color: #fff; }
+  .btn.ghost:hover { background: rgba(255,255,255,0.15); }
 
   /* header */
-  .header { background: linear-gradient(#000080, #1084d0); color: #fff; text-align: center; padding: 10px 6px 6px; }
-  .header h1 { margin: 0; font-family: Impact, "Arial Black", sans-serif; font-size: 44px; letter-spacing: 2px;
-               color: #ffff00; text-shadow: 3px 3px 0 #ff0000, 5px 5px 0 #000; }
-  .header .slogan { font-family: "Comic Sans MS", cursive; font-size: 18px; color: #00ffff; }
-  #hammer { display: inline-block; cursor: pointer; user-select: none; animation: wiggle 2s ease-in-out infinite; }
-  #hammer.whack { animation: whack 0.25s; }
-  @keyframes whack { 50% { transform: rotate(-50deg); } }
+  header { position: sticky; top: 0; z-index: 10; background: rgba(250,247,242,0.95); border-bottom: 1px solid var(--line); backdrop-filter: blur(6px); }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+  .brand img { width: 44px; height: 44px; border-radius: 50%; background: #fff; }
+  .brand b { font-family: Georgia, serif; font-weight: normal; font-size: 21px; display: block; line-height: 1.1; }
+  .brand small { color: var(--muted); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+  nav a { margin-left: 24px; text-decoration: none; color: var(--ink); font-size: 15px; }
+  nav a:hover { color: var(--wood); }
+  nav a.btn { color: #fff; padding: 9px 16px; }
 
-  marquee { background: #000; color: #00ff00; font-family: "Courier New", monospace; font-size: 16px; padding: 3px 0; border-top: 2px solid #ffff00; border-bottom: 2px solid #ffff00; }
+  /* hero */
+  .hero { position: relative; min-height: 78vh; display: flex; align-items: center; color: #fff;
+          background: #222 url("work/IMG_6626.jpg") center 40% / cover no-repeat; }
+  .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,20,20,0.78), rgba(20,20,20,0.25)); }
+  .hero .wrap { position: relative; width: 100%; }
+  .hero h1 { font-size: clamp(38px, 6vw, 62px); margin: 0 0 18px; max-width: 640px; }
+  .hero p { font-size: 19px; max-width: 520px; margin: 0 0 30px; color: #eee; }
+  .hero .btn { margin-right: 12px; margin-bottom: 10px; }
 
-  .blink { animation: blink 1s steps(1) infinite; }
-  @keyframes blink { 50% { visibility: hidden; } }
-  .rainbow { background: linear-gradient(90deg, red, orange, yellow, lime, cyan, blue, magenta); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: bold; }
-  hr.fancy { border: 0; height: 6px; background: linear-gradient(90deg, red, orange, yellow, lime, cyan, blue, magenta); }
+  /* services */
+  .services { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+  .service { background: var(--card); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .service img { width: 100%; height: 200px; object-fit: cover; }
+  .service div { padding: 20px 22px 24px; }
+  .service h3 { font-size: 22px; margin: 0 0 8px; }
+  .service p { margin: 0; color: var(--muted); font-size: 15px; }
 
-  /* layout table */
-  table.layout { width: 100%; border-collapse: collapse; }
-  td.nav { width: 170px; vertical-align: top; background: #008080; padding: 8px; border-right: 3px ridge #ccc; }
-  td.nav a { display: block; background: #c0c0c0; border: 3px outset #fff; margin: 0 0 6px; padding: 4px; text-align: center;
-             color: #000; text-decoration: none; font-family: "Comic Sans MS", cursive; font-size: 14px; }
-  td.nav a:active { border-style: inset; }
-  td.main { vertical-align: top; background: #ffffe0; padding: 12px 16px; }
+  /* signature strip */
+  .signature { background: var(--navy); color: #fff; }
+  .signature .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .signature .eyebrow { color: #e7b98a; }
+  .signature p { color: #d8dde5; }
+  .signature .pics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .signature .pics img { width: 100%; height: 300px; object-fit: cover; border-radius: 4px; }
 
-  h2 { font-family: "Arial Black", Arial, sans-serif; color: #800000; border-bottom: 2px dashed #800000; margin: 18px 0 8px; }
-  .new { background: red; color: yellow; font: bold 11px Arial, sans-serif; padding: 0 3px; vertical-align: middle; }
+  /* workfolio */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .filters button { font: inherit; font-size: 14px; padding: 7px 16px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; }
+  .filters button.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px 16px; }
+  .tile.wide { grid-column: span 2; }
+  .tile .pic { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; }
+  .tile .pic button { padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden; }
+  .tile img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; transition: transform 0.3s; }
+  .tile .pic button:hover img { transform: scale(1.04); }
+  .tile .pic .more { position: absolute; right: 10px; bottom: 10px; background: rgba(20,20,20,0.75); color: #fff; font: 600 13px sans-serif; padding: 6px 11px; border-radius: 999px; cursor: pointer; }
+  .tile .pic .more:hover { background: #000; }
+  .tile .meta { padding: 8px 2px 0; }
+  .tile .meta b { display: block; font-weight: 600; font-size: 15px; line-height: 1.35; }
+  .tile .meta small { color: var(--muted); font-size: 13px; }
 
-  .construction { background: repeating-linear-gradient(45deg, #ffcc00 0 18px, #000 18px 36px); padding: 6px; margin: 10px 0; }
-  .construction div { background: #ffcc00; text-align: center; font: bold 16px "Arial Black", Arial, sans-serif; padding: 4px; }
+  /* lightbox */
+  #lightbox { display: none; position: fixed; inset: 0; z-index: 50; background: rgba(15,15,15,0.94); align-items: center; justify-content: center; flex-direction: column; }
+  #lightbox.open { display: flex; }
+  #lightbox img { max-width: 92vw; max-height: 82vh; object-fit: contain; }
+  #lightbox p { color: #ddd; margin: 14px 0 0; font-size: 15px; }
+  #lightbox button { position: absolute; background: none; border: 0; color: #fff; font-size: 40px; cursor: pointer; padding: 10px 18px; }
+  #lb-close { top: 10px; right: 10px; }
+  #lb-prev { left: 10px; top: 50%; transform: translateY(-50%); }
+  #lb-next { right: 10px; top: 50%; transform: translateY(-50%); }
 
-  .photo { float: right; margin: 0 0 8px 12px; border: 6px ridge #c0c0c0; width: 220px; }
-  .caption { font-size: 12px; font-style: italic; text-align: center; }
+  /* process */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; counter-reset: step; }
+  .step h3 { font-size: 22px; margin: 0 0 8px; }
+  .step h3::before { counter-increment: step; content: counter(step); display: inline-flex; align-items: center; justify-content: center;
+                     width: 34px; height: 34px; border-radius: 50%; background: var(--wood); color: #fff; font: 600 16px sans-serif; margin-right: 10px; }
+  .step p { margin: 0; color: var(--muted); }
 
-  table.prices { border: 3px outset #ccc; background: #fff; border-collapse: separate; width: 100%; }
-  table.prices td, table.prices th { border: 2px inset #ccc; padding: 4px 6px; font-size: 15px; }
-  table.prices th { background: #000080; color: #fff; }
+  /* about */
+  .about { background: #f1ebe2; }
+  .about .wrap { display: grid; grid-template-columns: 240px 1fr; gap: 48px; align-items: center; }
+  .about img { width: 240px; border-radius: 50%; background: #fff; border: 6px solid #fff; }
 
-  /* secret games cheat sheet */
-  .cheats { background: #000; color: #0f0; border: 4px ridge #ff00ff; padding: 8px 14px; font-family: "Courier New", monospace; font-size: 14px; }
-  .cheats h3 { color: #ff0; margin: 10px 0 4px; font-size: 16px; }
-  .cheats ol { margin: 0 0 6px; padding-left: 22px; }
-  .cheats a { color: #0ff; }
-  .cheats .done-tag { color: #ff0; font-weight: bold; display: none; }
-  .cheats .done .done-tag { display: inline; }
-  .cheats kbd { background: #333; border: 1px outset #888; padding: 0 4px; color: #fff; }
+  /* contact */
+  .contact { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .contact .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  form { display: grid; gap: 14px; }
+  label { font-size: 14px; font-weight: 600; }
+  input, textarea, select { width: 100%; font: inherit; padding: 11px 12px; border: 1px solid #cfc6b8; border-radius: 4px; background: #fff; margin-top: 4px; }
+  .contact-info p { margin: 0 0 10px; }
 
-  .testimonial { background: #fff; border: 2px dashed #999; padding: 6px 10px; margin: 6px 0; font-family: "Comic Sans MS", cursive; font-size: 14px; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0; color: var(--muted); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  /* the easter egg: an innocent-looking floppy disk */
+  #y2k { background: none; border: 0; cursor: pointer; font-size: 18px; opacity: 0.45; padding: 4px; transition: opacity 0.2s, transform 0.2s; }
+  #y2k:hover { opacity: 1; transform: rotate(-12deg) scale(1.2); }
 
-  /* visitor counter */
-  #counter { display: inline-block; background: #000; border: 3px inset #888; padding: 2px 4px; cursor: pointer; }
-  #counter:hover { border-color: #ff0; box-shadow: 0 0 8px #ff0; }
-  #counter span { display: inline-block; width: 16px; margin: 0 1px; background: #222; color: #ff3333; font: bold 20px "Courier New", monospace; text-align: center; }
-
-  /* guestbook */
-  #guestbook-entries .entry { border-bottom: 1px dotted #999; padding: 4px 0; font-size: 14px; }
-  #guestbook-entries .entry b { color: #008000; }
-  .gb-form input, .gb-form textarea { font-family: "Courier New", monospace; font-size: 14px; }
-  .btn98 { font-family: Tahoma, Arial, sans-serif; font-size: 13px; background: #c0c0c0; border: 2px outset #fff; padding: 3px 12px; cursor: pointer; }
-  .btn98:active { border-style: inset; }
-
-  .footer { text-align: center; font-size: 12px; padding: 10px; background: #c0c0c0; }
-  .badges span { display: inline-block; border: 2px outset #fff; background: #000; color: #0f0; font: bold 10px Verdana, sans-serif; padding: 3px 5px; margin: 2px; }
-  #banana { display: inline-block; font-size: 20px; cursor: pointer; user-select: none; animation: bounce 1s ease-in-out infinite; }
-  @keyframes wiggle { 0%, 80%, 100% { transform: rotate(0); } 85% { transform: rotate(-20deg); } 90% { transform: rotate(15deg); } 95% { transform: rotate(-10deg); } }
-  @keyframes bounce { 50% { transform: translateY(-5px); } }
-
-  /* secret hints box */
-  .secret-box { background: #000; border: 3px ridge #ff00ff; color: #0f0; font-family: "Courier New", monospace; font-size: 13px; padding: 6px; margin-top: 10px; text-align: center; }
-  .secret-box button { margin-top: 4px; }
-  #hints { display: none; text-align: left; margin: 6px 0 0; padding-left: 16px; }
-  #hints li { margin-bottom: 4px; }
-  #hints li.done { color: #888; text-decoration: line-through; }
-
-  /* Windows 98 style popup for unlocked secrets */
-  #popup-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 50; }
-  #popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 340px; max-width: 92vw; background: #c0c0c0; border: 3px outset #fff; font-family: Tahoma, Arial, sans-serif; }
-  #popup .titlebar { background: linear-gradient(90deg, #000080, #1084d0); color: #fff; font-weight: bold; font-size: 13px; padding: 3px 6px; display: flex; justify-content: space-between; }
-  #popup .titlebar button { font: bold 11px Tahoma; padding: 0 5px; background: #c0c0c0; border: 2px outset #fff; cursor: pointer; }
-  #popup .body { padding: 14px; display: flex; gap: 12px; align-items: center; font-size: 14px; }
-  #popup .body img { width: 64px; }
-  #popup .buttons { text-align: center; padding: 0 0 12px; }
-
-  @media (max-width: 640px) {
-    td.nav { display: none; }
-    .photo { float: none; display: block; margin: 0 auto 8px; }
-    .header h1 { font-size: 32px; }
+  @media (max-width: 520px) { .tile.wide { grid-column: auto; } }
+  @media (max-width: 820px) {
+    nav a:not(.btn) { display: none; }
+    header .wrap { height: 64px; gap: 12px; }
+    .brand img { width: 38px; height: 38px; }
+    .brand b { font-size: 17px; white-space: nowrap; }
+    nav .long { display: none; }
+    .brand small { display: none; }
+    nav a.btn { padding: 8px 12px; font-size: 14px; white-space: nowrap; margin-left: 0; }
+    .hero::before { background: rgba(20,20,20,0.62); }
+    .signature .wrap, .about .wrap, .contact .wrap { grid-template-columns: 1fr; }
+    .about img { width: 180px; margin: 0 auto; }
+    section { padding: 56px 0; }
   }
 </style>
 </head>
 <body>
 
-<div class="page">
-
-  <!-- ===== HEADER ===== -->
-  <div class="header">
-    <h1><span id="hammer" title="whack me!">🔨</span> EVAN'S HANDY SERVICES 🔧</h1>
-    <div class="slogan">~*~ No Job Too Small!!! ~*~ Est. 1999 ~*~ Y2K Ready ~*~</div>
+<header>
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <img src="img/logo.png" alt="">
+      <span><b>Evan's Handy Services</b><small>Finish Carpentry &amp; Custom Woodwork</small></span>
+    </a>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#work">Workfolio</a>
+      <a href="#about">About</a>
+      <a class="btn" href="#contact"><span class="long">Get an </span>Estimate</a>
+    </nav>
   </div>
-  <marquee scrollamount="6">*** WELCOME TO MY HOME PAGE *** CALL 1-800-EVAN-FIX FOR A FREE ESTIMATE *** NOW ACCEPTING PAYMENT IN BANANAS *** 🎂 HAPPY BIRTHDAY EVAN!!! 🎂 *** NOW 100% Y2K COMPLIANT *** SIGN MY GUESTBOOK!!! ***</marquee>
+</header>
 
-  <table class="layout">
-    <tr>
-      <!-- ===== SIDE NAV ===== -->
-      <td class="nav">
-        <a href="#about">🏠 Home</a>
-        <a href="#services">🛠️ Services</a>
-        <a href="#prices">💵 Prices</a>
-        <a href="#reviews">⭐ Reviews</a>
-        <a href="#guestbook">📖 Guestbook</a>
-        <a href="#secret-games">🎮 Secret Games</a>
-        <a href="mailto:evan@handyservices.example?subject=I%20need%20a%20handyman">📧 E-Mail Me</a>
-        <br>
-        <center>
-          <font face="Comic Sans MS" size="2" color="#ffff00">You are visitor #</font><br>
-          <div id="counter" title="hmm... click me?"></div><br>
-          <font face="Comic Sans MS" size="1" color="#ffff00">(click me!)</font>
-        </center>
-        <br>
-        <div class="secret-box">
-          <span class="blink">🕵️ 4 SECRETS</span><br>HIDDEN ON THIS PAGE!!!<br>
-          found: <b id="secrets-nav">0</b>/4<br>
-          <button class="btn98" type="button" id="hint-btn">Need a hint?</button>
-          <ul id="hints">
-            <li data-key="kong">🔨 That hammer up top looks like it wants to be used... a few times</li>
-            <li data-key="invasion">🎮 Gamers know the code: ↑↑↓↓←→←→BA</li>
-            <li data-key="clicker">🔢 Who's counting the visitors?</li>
-            <li data-key="snatch">🍌 Something bananas at the very bottom</li>
-          </ul>
-        </div>
-        <br>
-        <center><font face="Arial" size="1" color="#ffffff">Best viewed in<br>Netscape Navigator 4.0<br>at 800x600</font></center>
-      </td>
+<!-- ===== HERO ===== -->
+<div class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow" style="color:#e7b98a;">Handcrafted carpentry · San Diego</p>
+    <h1>Custom woodwork, built to last.</h1>
+    <p>Arched doors, built-ins, kitchens, saunas and outdoor carpentry, designed and built by hand.</p>
+    <a class="btn" href="#contact">Get a free estimate</a>
+    <a class="btn ghost" href="#work">See the work</a>
+  </div>
+</div>
 
-      <!-- ===== MAIN ===== -->
-      <td class="main">
-
-        <div class="construction"><div>🚧 THIS SITE IS UNDER CONSTRUCTION 🚧</div></div>
-
-        <a name="about"></a>
-        <h2>Welcome!!! <span class="new">NEW!</span></h2>
-        <img class="photo" src="img/evan_photo.jpg" alt="Evan at work">
-        <p>Hi! My name is <b>EVAN</b> and welcome to my web site on the <i>Information Superhighway</i>!!!</p>
-        <p>I am a professional handyman with over <b>0 years</b> of experience. I can fix ANYTHING. If I can't fix it, it probably wasn't broken. <span class="blink">☎️ CALL NOW!!! ☎️</span></p>
-        <p>Pictured: me, fixing a pool table. It is now <u>slightly</u> less broken.</p>
-        <p class="caption" style="clear: both;">&nbsp;</p>
-
-        <a name="services"></a>
-        <h2>🛠️ Services</h2>
-        <ul>
-          <li>Pool Table Repair <span class="new">SPECIALTY!</span></li>
-          <li>Trash Can Arranging (blue AND green)</li>
-          <li>Leaky Faucets, Squeaky Doors, Wobbly Chairs</li>
-          <li>Shelf Hanging (shelves may be crooked)</li>
-          <li>Barrel Removal &amp; Ladder Inspection</li>
-          <li>Y2K Bug Extermination 🐛💻</li>
-          <li>Banana Storage Solutions 🍌</li>
-          <li>Making A Surprised Face At Your Problem 😮 <i>(free!)</i></li>
-        </ul>
-
-        <a name="prices"></a>
-        <h2>💵 Prices</h2>
-        <table class="prices">
-          <tr><th>Job</th><th>Price</th></tr>
-          <tr><td>Hourly rate</td><td>$19.99/hr</td></tr>
-          <tr><td>Pool table fixing</td><td>$40 + snacks</td></tr>
-          <tr><td>Looking at it and saying "hmm"</td><td>$5</td></tr>
-          <tr><td>Emergency call (before 10am)</td><td>no.</td></tr>
-          <tr><td>Your birthday</td><td><span class="rainbow">FREE!!!</span></td></tr>
-        </table>
-
-        <a name="reviews"></a>
-        <h2>⭐ What My Customers Say</h2>
-        <div class="testimonial">"Evan fixed my deck in only 3 days. It was a 20 minute job. 5 stars!!!" <br>— Linda, Escondido</div>
-        <div class="testimonial">"He showed up. Made that face. Left. The sink works now. I don't know how." <br>— Gary P.</div>
-        <div class="testimonial">"Best handyman on the World Wide Web." <br>— Evan's Mom</div>
-
-        <a name="secret-games"></a>
-        <h2>🎮 Secret Games <span class="new">CHEAT CODES!</span></h2>
-        <div class="cheats" id="cheats">
-          <p>Evan has hidden 4 mini games on this page. Here's how to find them:</p>
-
-          <div data-key="kong">
-            <h3>1. EVAN KONG 🦍 <span class="done-tag">✓ FOUND</span></h3>
-            <ol>
-              <li>Scroll to the very top of the page.</li>
-              <li>Click the 🔨 hammer next to "EVAN'S HANDY SERVICES" <b>3 times</b>.</li>
-              <li>Press <b>PLAY!</b> in the popup.</li>
-              <li>Controls: <kbd>←</kbd> <kbd>→</kbd> move, <kbd>↑</kbd> <kbd>↓</kbd> climb ladders, <kbd>space</kbd> jump. Keyboard needed.</li>
-            </ol>
-          </div>
-
-          <div data-key="invasion">
-            <h3>2. EVAN INVASION 🚀 <span class="done-tag">✓ FOUND</span></h3>
-            <ol>
-              <li>Click any empty part of the page (not a text box).</li>
-              <li>Type the secret code on your keyboard: <kbd>↑</kbd> <kbd>↑</kbd> <kbd>↓</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>B</kbd> <kbd>A</kbd></li>
-              <li>Press <b>PLAY!</b> in the popup.</li>
-              <li>Controls: arrows or <kbd>WASD</kbd> to fly, <kbd>space</kbd> to shoot. Keyboard needed.</li>
-            </ol>
-          </div>
-
-          <div data-key="clicker">
-            <h3>3. PRIMATE EVOLUTION 🍌 <span class="done-tag">✓ FOUND</span></h3>
-            <ol>
-              <li>Find the red "You are visitor #" counter in the left menu (on phones: <a href="#" class="open-egg" data-egg="clicker">tap here</a>).</li>
-              <li>Click the counter.</li>
-              <li>Press <b>PLAY!</b> in the popup.</li>
-              <li>Click Evan's head to pick bananas, then buy farms and factories. Works on phones!</li>
-            </ol>
-          </div>
-
-          <div data-key="snatch">
-            <h3>4. BANANDERSNATCH 📖 <span class="done-tag">✓ FOUND</span></h3>
-            <ol>
-              <li>Scroll all the way to the bottom of the page.</li>
-              <li>Click the bouncing 🍌 at the end of the copyright line.</li>
-              <li>Press <b>PLAY!</b> in the popup.</li>
-              <li>Type your name, then type your choices (like <i>run</i> or <i>climb tree</i>) and press submit. Works on phones!</li>
-            </ol>
-          </div>
-        </div>
-
-        <a name="guestbook"></a>
-        <h2>📖 Sign My Guestbook!!!</h2>
-        <div id="guestbook-entries"></div>
-        <form class="gb-form" id="gb-form">
-          <p>Name: <input id="gb-name" maxlength="40" required></p>
-          <p>Message:<br><textarea id="gb-msg" rows="3" cols="40" maxlength="300" required></textarea></p>
-          <button class="btn98" type="submit">Sign Guestbook</button>
-        </form>
-
-      </td>
-    </tr>
-  </table>
-
-  <hr class="fancy">
-
-  <!-- ===== FOOTER ===== -->
-  <div class="footer">
-    <div class="badges">
-      <span>Y2K COMPLIANT ✓</span><span>MADE WITH NOTEPAD</span><span>HTML 4.01</span><span>NO FRAMES!</span>
+<!-- ===== SERVICES ===== -->
+<section id="services">
+  <div class="wrap">
+    <p class="eyebrow">What I do</p>
+    <h2 class="section-title">Specialties</h2>
+    <p class="lead">From one custom door to a full room of built-ins, every project is measured, built and installed to fit your home.</p>
+    <div class="services">
+      <div class="service"><img src="work/thumbs/IMG_6229.jpg" alt="" loading="lazy"><div>
+        <h3>Custom Doors &amp; Arches</h3>
+        <p>Arched doors and openings, display niches, plank and barn doors, plus door installation and trim.</p></div></div>
+      <div class="service"><img src="work/thumbs/IMG_6625.jpg" alt="" loading="lazy"><div>
+        <h3>Built-ins &amp; Shelving</h3>
+        <p>Library walls with rolling ladders, bookcases, closet systems, pantries, media cabinets and floating shelves.</p></div></div>
+      <div class="service"><img src="work/thumbs/IMG_2831.jpg" alt="" loading="lazy"><div>
+        <h3>Kitchens &amp; Bars</h3>
+        <p>Cabinet installation, butcher-block and live-edge countertops, wet bars and tile backsplashes.</p></div></div>
+      <div class="service"><img src="work/thumbs/IMG_6927.jpg" alt="" loading="lazy"><div>
+        <h3>Baths &amp; Saunas</h3>
+        <p>Cedar saunas, tiled showers, vanities and recessed cabinets.</p></div></div>
+      <div class="service"><img src="work/thumbs/IMG_1533.jpg" alt="" loading="lazy"><div>
+        <h3>Railings &amp; Stairs</h3>
+        <p>Custom stair and porch railings, outdoor stairs and decks.</p></div></div>
+      <div class="service"><img src="work/thumbs/IMG_1804.jpg" alt="" loading="lazy"><div>
+        <h3>Outdoor Carpentry</h3>
+        <p>Gates, fences, arbors, outdoor showers and equipment enclosures.</p></div></div>
     </div>
-    <p>&lt;&lt; <a href="#">Prev</a> | <a href="#">Handyman WebRing</a> | <a href="#">Random</a> | <a href="#">Next</a> &gt;&gt;</p>
-    <p>© 2000 Evan's Handy Services. All rights reserved. Not responsible for crooked shelves. <span id="banana" title="a banana?">🍌</span></p>
-    <p>🕵️ Secrets found: <b id="secrets">0</b>/4 — <a href="#" id="hint-link">need a hint?</a></p>
-    <p style="font-size:10px;color:#555;">Mini games adapted from <a href="https://github.com/ape-unit" target="_blank">Ape Unit</a>. Monkeys replaced with Evan.</p>
   </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact-info">
+      <p class="eyebrow">Contact</p>
+      <h2 class="section-title">Let's talk about your project</h2>
+      <p class="lead">Send a few details and I'll get back to you to set up a free estimate.</p>
+      <p><b>Email:</b> <a id="email-link" href="#"></a></p>
+      <p><b>Service area:</b> San Diego and surrounding areas</p>
+    </div>
+    <form id="contact-form">
+      <label>Name<input name="name" required></label>
+      <label>Email or phone<input name="reply" required></label>
+      <label>Type of project
+        <select name="type">
+          <option>Custom doors &amp; arches</option>
+          <option>Built-ins &amp; shelving</option>
+          <option>Kitchens &amp; bars</option>
+          <option>Baths &amp; saunas</option>
+          <option>Railings &amp; stairs</option>
+          <option>Outdoor carpentry</option>
+          <option>Something else</option>
+        </select>
+      </label>
+      <label>Tell me about it<textarea name="details" rows="5" required></textarea></label>
+      <button class="btn" type="submit">Send request</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== SIGNATURE: ARCHES ===== -->
+<section class="signature">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Signature work</p>
+      <h2 class="section-title">Arches, done right.</h2>
+      <p>Arched doors are some of the hardest pieces in finish carpentry: curved jambs, curved casing and a door that has to swing cleanly through it all. They're also the work I'm proudest of.</p>
+      <p>Whether you're restoring a Spanish-style home or adding character to a new one, I can build arched doors, openings, niches and gates to match.</p>
+      <a class="btn ghost" href="#work" data-jump="doors">See arched work</a>
+    </div>
+    <div class="pics">
+      <img src="work/thumbs/IMG_6225.jpg" alt="Arched door" loading="lazy">
+      <img src="work/thumbs/IMG_6111.jpg" alt="Arched garden gate" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ===== WORKFOLIO ===== -->
+<section id="work">
+  <div class="wrap">
+    <p class="eyebrow">Recent projects</p>
+    <h2 class="section-title">Workfolio</h2>
+    <p class="lead">A selection of jobs from the past few years. Click a project to see more photos.</p>
+    <div class="filters" id="filters"></div>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button id="lb-close" aria-label="Close">×</button>
+  <button id="lb-prev" aria-label="Previous">‹</button>
+  <img id="lb-img" alt="">
+  <p id="lb-cap"></p>
+  <button id="lb-next" aria-label="Next">›</button>
 </div>
 
-<!-- ===== SECRET POPUP ===== -->
-<div id="popup-bg">
-  <div id="popup">
-    <div class="titlebar"><span id="popup-title">Secret Found!</span><button type="button" id="popup-x">X</button></div>
-    <div class="body"><img src="img/evan_head.png" alt=""><div id="popup-text"></div></div>
-    <div class="buttons"><button class="btn98" id="popup-play" type="button">PLAY!</button> <button class="btn98" id="popup-cancel" type="button">Cancel</button></div>
+<!-- ===== PROCESS ===== -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">How it works</p>
+    <h2 class="section-title">Simple from start to finish</h2>
+    <div class="steps">
+      <div class="step"><h3>Estimate</h3><p>Tell me about your project. I'll come take a look, measure and give you a clear quote.</p></div>
+      <div class="step"><h3>Design</h3><p>We settle the details together: size, wood, finish and hardware, so there are no surprises.</p></div>
+      <div class="step"><h3>Build</h3><p>I build and install everything with care and leave your home clean when I'm done.</p></div>
+    </div>
   </div>
-</div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<!-- EDIT: personalize this with Evan's own words -->
+<section class="about" id="about">
+  <div class="wrap">
+    <img src="img/logo.png" alt="Illustration of Evan">
+    <div>
+      <p class="eyebrow">About</p>
+      <h2 class="section-title">Hi, I'm Evan.</h2>
+      <p>I'm a carpenter who loves building things that make a home feel special: a door that fits its arch perfectly, a bookcase that turns a wall into a library, a gate that makes you smile every time you come home.</p>
+      <p>Every job, big or small, gets the same attention to detail. If you have an idea, I'd love to help you build it.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> Evan's Handy Services · San Diego, CA</span>
+    <span>Finish carpentry &amp; custom woodwork <button id="y2k" type="button" title="Visit our original website (est. 2000)" aria-label="Visit our original website">💾</button></span>
+  </div>
+</footer>
 
 <script>
-  // ---------- secrets / easter eggs ----------
-  const SECRETS = {
-    kong:     { title: "EVAN KONG unlocked!",     text: "You hammered the hammer! Evan is throwing barrels. Arrows to move, space to jump.", url: "games/ape-kong/index.html" },
-    invasion: { title: "EVAN INVASION unlocked!", text: "↑↑↓↓←→←→BA! Evan is flying through space. Arrows/WASD to move, space to shoot.", url: "games/ape-invasion/index.html" },
-    clicker:  { title: "PRIMATE EVOLUTION unlocked!", text: "You clicked the counter! Click Evan to pick bananas. Build an empire.", url: "games/evan-clicker/index.html" },
-    snatch:   { title: "BANANDERSNATCH unlocked!", text: "You found the banana! A choose-your-own-adventure. Beware of Evan.", url: "games/banandersnatch/index.html" }
-  };
-  const found = new Set(JSON.parse(localStorage.getItem("evanSecrets") || "[]"));
-  const secretsEl = document.getElementById("secrets");
-  function refreshSecrets() {
-    secretsEl.textContent = found.size;
-    document.getElementById("secrets-nav").textContent = found.size;
-    document.querySelectorAll("#hints li, #cheats [data-key]").forEach((el) => el.classList.toggle("done", found.has(el.dataset.key)));
-  }
-  refreshSecrets();
-  const hints = document.getElementById("hints");
-  document.getElementById("hint-btn").addEventListener("click", () => {
-    hints.style.display = hints.style.display === "block" ? "none" : "block";
-  });
-  document.getElementById("hint-link").addEventListener("click", (e) => {
+  const CONTACT_EMAIL = "evanthehandymansd@gmail.com";
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+  const emailLink = document.getElementById("email-link");
+  emailLink.href = "mailto:" + CONTACT_EMAIL;
+  emailLink.textContent = CONTACT_EMAIL;
+
+  // contact form opens the visitor's email app with the details filled in
+  document.getElementById("contact-form").addEventListener("submit", (e) => {
     e.preventDefault();
-    alert(Array.from(hints.children).map((li) => (found.has(li.dataset.key) ? "✓ " : "• ") + li.textContent).join("\n"));
+    const f = e.target;
+    const body = `Name: ${f.name.value}\nReply to: ${f.reply.value}\nProject: ${f.type.value}\n\n${f.details.value}`;
+    location.href = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent("Estimate request: " + f.type.value) + "&body=" + encodeURIComponent(body);
   });
 
-  const popupBg = document.getElementById("popup-bg");
-  let pendingUrl = null;
-  function unlock(key) {
-    const s = SECRETS[key];
-    found.add(key);
-    localStorage.setItem("evanSecrets", JSON.stringify([...found]));
-    refreshSecrets();
-    document.getElementById("popup-title").textContent = s.title;
-    document.getElementById("popup-text").textContent = s.text;
-    pendingUrl = s.url;
-    popupBg.style.display = "block";
-  }
-  function closePopup() { popupBg.style.display = "none"; }
-  document.getElementById("popup-play").addEventListener("click", () => { location.href = pendingUrl; });
-  document.getElementById("popup-cancel").addEventListener("click", closePopup);
-  document.getElementById("popup-x").addEventListener("click", closePopup);
+  // easter egg: the floppy disk opens the Y2K site
+  document.getElementById("y2k").addEventListener("click", () => { location.href = "y2k.html"; });
 
-  // 1. click the hammer 3 times -> Evan Kong
-  let whacks = 0;
-  const hammer = document.getElementById("hammer");
-  hammer.addEventListener("click", () => {
-    hammer.classList.remove("whack"); void hammer.offsetWidth; hammer.classList.add("whack");
-    if (++whacks === 3) { whacks = 0; unlock("kong"); }
-  });
-
-  // 2. Konami code -> Evan Invasion
-  const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
-  let pos = 0;
-  document.addEventListener("keydown", (e) => {
-    if (e.target.closest && e.target.closest("input, textarea")) return;
-    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-    pos = key === konami[pos] ? pos + 1 : (key === konami[0] ? 1 : 0);
-    if (pos === konami.length) { pos = 0; unlock("invasion"); }
-  });
-
-  // 3. click the visitor counter -> Primate Evolution
-  const counter = document.getElementById("counter");
-  let visits = Number(localStorage.getItem("evanVisits") || 1336) + 1;
-  localStorage.setItem("evanVisits", visits);
-  counter.innerHTML = String(visits).padStart(7, "0").split("").map((d) => `<span>${d}</span>`).join("");
-  counter.addEventListener("click", () => unlock("clicker"));
-
-  // phones can't see the side menu, so the cheat sheet links straight to that egg
-  document.querySelectorAll(".open-egg").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); unlock(a.dataset.egg); }));
-
-  // 4. click the banana in the footer -> Banandersnatch
-  document.getElementById("banana").addEventListener("click", () => unlock("snatch"));
-
-  // ---------- guestbook (saved in this browser only) ----------
-  const seed = [
-    { name: "xXSkaterGirl2000Xx", msg: "cool site!!! u should add more gifs" },
-    { name: "Linda", msg: "Evan when are you coming back for the deck" },
-    { name: "webmaster@aol", msg: "nice table layout. very professional" }
+  // ---------- workfolio ----------
+  const CATEGORIES = { all: "All", doors: "Doors & Arches", builtins: "Built-ins & Shelving", kitchens: "Kitchens & Bars",
+                       baths: "Baths & Saunas", railings: "Railings & Stairs", outdoor: "Outdoor" };
+  const PROJECTS = [
+    { title: "Arched doors throughout a Spanish-style home", cat: "doors", show: 2, photos: [["IMG_6229", "Custom arched door with matching arched opening"], ["IMG_6225", "Arched door with recessed panel and vintage hardware"], ["IMG_6227", "Arched door beside a French window"], ["IMG_6230", "Arched door, hallway"], ["IMG_6224", "Arched door and casing"], ["74F8DFB7-07F9-45C6-A59B-1252DC041C9E", "Arched door with arched trim"]] },
+    { title: "Library wall with rolling ladder", cat: "builtins", show: 2, photos: [["IMG_6626", "Floor-to-ceiling bookcase with rolling ladder and cabinets"], ["IMG_6625", "Library wall with rolling ladder"], ["IMG_6629", "Library wall detail"]] },
+    { title: "Spanish-style kitchen remodel", cat: "kitchens", show: 2, photos: [["IMG_2831", "Kitchen remodel with dining nook"], ["IMG_2642", "Arched display niche"], ["IMG_2827", "Kitchen remodel"], ["IMG_2835", "Kitchen island with wood countertop"], ["IMG_2685", "Knotty alder plank door"], ["IMG_2541", "Arched opening, framing"], ["IMG_2546", "Arched niche, in progress"]] },
+    { title: "Cedar sauna", cat: "baths", show: 1, photos: [["IMG_6927", "Cedar sauna interior"], ["IMG_6926", "Cedar sauna with glass door"], ["IMG_6928", "Cedar sauna, finished"]] },
+    { title: "Arched garden gate", cat: "outdoor", show: 1, photos: [["IMG_6111", "Arched garden gate"], ["IMG_6110", "Arched gate, back side"]] },
+    { title: "Closet built-in with cubbies and drawers", cat: "builtins", show: 1, photos: [["IMG_5453", "Closet built-in: cubbies and drawers"], ["IMG_5459", "Closet built-in, cubbies"], ["IMG_5458", "Closet built-in, drawers"], ["IMG_5454", "Drawer with cut-out pull"], ["IMG_5451", "Closet built-in, before"]] },
+    { title: "Lattice stair railing", cat: "railings", show: 1, photos: [["IMG_1533", "Lattice stair railing"], ["IMG_1548", "Lattice railing detail"], ["IMG_1516", "Railing panels in the shop"]] },
+    { title: "Live-edge bar top", cat: "kitchens", show: 1, photos: [["IMG_2168", "Live-edge bar top, installed"], ["IMG_2164", "Live-edge slab, shaping"], ["IMG_2160", "Live-edge slab glue-up"]] },
+    { title: "Wet bar with butcher-block countertop", cat: "kitchens", show: 1, photos: [["IMG_2131", "Wet bar"], ["IMG_2130", "Wet bar with butcher-block countertop"], ["IMG_2133", "Wet bar, cabinets"]] },
+    { title: "Cedar fence with arbor entry", cat: "outdoor", show: 1, photos: [["IMG_1804", "Cedar fence with arbor entry"], ["IMG_1803", "Fence and arbor, in progress"]] },
+    { title: "Arched recessed bathroom cabinet", cat: "baths", show: 1, photos: [["IMG_6044", "Arched recessed bathroom cabinet"], ["IMG_6041", "Arched cabinet, open"]] },
+    { title: "Staircase bookshelf", cat: "builtins", show: 1, photos: [["IMG_7052", "Staircase bookshelf"]] },
+    { title: "Sliding barn door", cat: "doors", show: 1, photos: [["IMG_3988", "Sliding barn door"]] },
+    { title: "Pantry closet: new door and shelving", cat: "builtins", show: 1, photos: [["IMG_2115", "Pantry shelving"], ["IMG_2113", "Six-panel interior door installation"]] },
+    { title: "Kitchen with herringbone backsplash", cat: "kitchens", show: 1, photos: [["IMG_9467", "Kitchen with herringbone backsplash"], ["IMG_9466", "Herringbone backsplash detail"]] },
+    { title: "Tiled tub and shower", cat: "baths", show: 1, photos: [["IMG_4989", "Tiled tub and shower with niche"]] },
+    { title: "Porch stair railing", cat: "railings", show: 1, photos: [["IMG_2516", "Porch stair railing"]] },
+    { title: "Wall-to-wall shelving", cat: "builtins", show: 1, photos: [["IMG_1652", "Wall-to-wall shelving unit"], ["IMG_1655", "Wall-to-wall shelving unit"], ["IMG_1617", "Storage shelving, in use"]] },
+    { title: "Outdoor shower enclosure", cat: "outdoor", show: 1, photos: [["68912876689__F3CCCB34-5B31-44B8-9799-1906B2A95FE0", "Outdoor shower enclosure"]] },
+    { title: "Outdoor stairs and railing", cat: "railings", show: 1, photos: [["IMG_1600", "Outdoor stairs and railing"]] },
+    { title: "Corner media cabinet", cat: "builtins", show: 1, photos: [["IMG_1502", "Corner media cabinet with floating shelf"]] },
+    { title: "Bathroom vanity", cat: "baths", show: 1, photos: [["IMG_5738", "Bathroom vanity"]] },
+    { title: "Deck and railing", cat: "railings", show: 1, photos: [["IMG_3877", "Deck and railing build"]] },
+    { title: "Custom arched floor mirror", cat: "builtins", show: 1, photos: [["IMG_3453", "Custom arched floor mirror"]] },
+    { title: "Side-yard gate", cat: "outdoor", show: 1, photos: [["IMG_1641", "Side-yard gate"]] },
+    { title: "Corner window bench", cat: "builtins", show: 1, photos: [["IMG_6067", "Corner window bench"]] },
+    { title: "Built-in cabinet", cat: "builtins", show: 1, photos: [["IMG_1738", "Built-in cabinet"]] },
+    { title: "Floating shelves", cat: "builtins", show: 1, photos: [["IMG_5519", "Floating shelves"]] },
+    { title: "Equipment enclosure", cat: "outdoor", show: 1, photos: [["IMG_0803", "Equipment enclosure"]] },
+    { title: "Wood bench shelf", cat: "outdoor", show: 1, photos: [["IMG_2445", "Wood bench shelf"]] }
   ];
-  const entriesEl = document.getElementById("guestbook-entries");
-  let entries = JSON.parse(localStorage.getItem("evanGuestbook") || "null") || seed;
-  function renderGuestbook() {
-    entriesEl.innerHTML = "";
-    entries.forEach((e) => {
-      const div = document.createElement("div");
-      div.className = "entry";
-      const b = document.createElement("b");
-      b.textContent = e.name + ": ";
-      div.append(b, document.createTextNode(e.msg));
-      entriesEl.appendChild(div);
+
+  const filtersEl = document.getElementById("filters");
+  const galleryEl = document.getElementById("gallery");
+
+  // each project shows its best 1-2 photos; the rest open in the lightbox
+  function render(cat) {
+    const list = cat === "all" ? PROJECTS : PROJECTS.filter((p) => p.cat === cat);
+    galleryEl.innerHTML = "";
+    list.forEach((proj) => {
+      const extra = proj.photos.length - proj.show;
+      const card = document.createElement("div");
+      card.className = "tile" + (proj.show > 1 ? " wide" : "");
+      const pic = document.createElement("div");
+      pic.className = "pic";
+      proj.photos.slice(0, proj.show).forEach(([f, cap], i) => {
+        const b = document.createElement("button");
+        b.innerHTML = `<img src="work/thumbs/${f}.jpg" alt="" loading="lazy">`;
+        b.querySelector("img").alt = cap;
+        b.setAttribute("aria-label", "View photos: " + proj.title);
+        b.addEventListener("click", () => openLightbox(proj, i));
+        pic.appendChild(b);
+      });
+      if (extra > 0) {
+        const more = document.createElement("button");
+        more.className = "more";
+        more.textContent = "+" + extra + " more";
+        more.addEventListener("click", () => openLightbox(proj, proj.show));
+        pic.appendChild(more);
+      }
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.innerHTML = "<b></b><small></small>";
+      meta.querySelector("b").textContent = proj.title;
+      meta.querySelector("small").textContent = proj.photos.length > 1 ? proj.photos.length + " photos" : "";
+      card.append(pic, meta);
+      galleryEl.appendChild(card);
     });
+    filtersEl.querySelectorAll("button").forEach((btn) => btn.classList.toggle("active", btn.dataset.cat === cat));
   }
-  renderGuestbook();
-  document.getElementById("gb-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    entries.push({ name: document.getElementById("gb-name").value, msg: document.getElementById("gb-msg").value });
-    localStorage.setItem("evanGuestbook", JSON.stringify(entries));
-    renderGuestbook();
-    e.target.reset();
+  Object.entries(CATEGORIES).forEach(([cat, label]) => {
+    const btn = document.createElement("button");
+    btn.dataset.cat = cat;
+    btn.textContent = label;
+    btn.addEventListener("click", () => render(cat));
+    filtersEl.appendChild(btn);
+  });
+  render("all");
+  document.querySelectorAll("[data-jump]").forEach((a) => a.addEventListener("click", () => render(a.dataset.jump)));
+
+  // lightbox: steps through every photo in the chosen project
+  const lb = document.getElementById("lightbox"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap");
+  let project = null, current = 0;
+  function openLightbox(proj, i) {
+    project = proj;
+    current = (i + proj.photos.length) % proj.photos.length;
+    const [f, cap] = proj.photos[current];
+    lbImg.src = "work/" + f + ".jpg";
+    lbImg.alt = cap;
+    lbCap.textContent = proj.photos.length > 1 ? `${proj.title} · ${current + 1} of ${proj.photos.length}` : proj.title;
+    const multi = proj.photos.length > 1;
+    document.getElementById("lb-prev").style.display = multi ? "" : "none";
+    document.getElementById("lb-next").style.display = multi ? "" : "none";
+    lb.classList.add("open");
+  }
+  function step(d) { if (project) openLightbox(project, current + d); }
+  function closeLightbox() { lb.classList.remove("open"); }
+  document.getElementById("lb-close").addEventListener("click", closeLightbox);
+  document.getElementById("lb-prev").addEventListener("click", () => step(-1));
+  document.getElementById("lb-next").addEventListener("click", () => step(1));
+  lb.addEventListener("click", (e) => { if (e.target === lb) closeLightbox(); });
+  document.addEventListener("keydown", (e) => {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") step(-1);
+    if (e.key === "ArrowRight") step(1);
   });
 </script>
 </body>
