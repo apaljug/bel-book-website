@@ -113,6 +113,18 @@
   .events .title { text-transform: uppercase; }
   .events .info { color: var(--dim); display: block; }
   .events .tickets { white-space: nowrap; text-align: right; }
+  .events .date .time { display: none; }
+
+  @media (max-width: 600px) {
+    .events li { grid-template-columns: 1fr; gap: 0.3rem; padding: 1rem 0; }
+    .events .date .time { display: inline; }          /* time moves up next to the date */
+    .events .info { display: none; }
+    .events .title { font-size: 1.2rem; line-height: 1.3; }
+    .events .tickets { text-align: left; display: flex; align-items: center; gap: 0.8rem; margin-top: 0.3rem; }
+    .events .going { display: inline; margin: 0; }
+    .ticket-form .join { order: 1; }                 /* checkbox above the button on phones */
+    .ticket-form button[type="submit"] { order: 2; width: 100%; }
+  }
 
   /* ---------- ticket form ---------- */
   .events .get-tickets { padding: 0.25rem 0.8rem; font-size: 0.95rem; }
@@ -273,7 +285,7 @@
     <!-- EDIT: one <li> per event. Copy/paste to add more.
          data-event = a unique id for the ticket list (keep it the same once people start signing up)
          data-date  = the show date; ticket signups close automatically after this day
-         data-time  = the show time, included in the confirmation email (leave "" if not set yet)
+         data-time  = the show time, shown on the site and in the confirmation email ("" shows "time TBA")
          add data-tickets="off" to an event that doesn't need tickets -->
     <ul class="events">
       <li data-event="2026-11-01-hyperfried-halloween" data-date="2026-11-01">
@@ -286,18 +298,15 @@
       </li>
       <li data-event="2026-11-12-vinyl-jam" data-date="2026-11-12" data-time="6:30–9:30 PM">
         <span class="date">NOV 12 THU</span>
-        <span><span class="title">Vinyl Jam</span>
-          <span class="info">6:30–9:30 PM</span></span>
+        <span><span class="title">Vinyl Jam</span></span>
       </li>
       <li data-event="2026-11-17-improv-jam" data-date="2026-11-17" data-time="6:30–9:30 PM">
         <span class="date">NOV 17 TUE</span>
-        <span><span class="title">Open Improv Jam</span>
-          <span class="info">6:30–9:30 PM</span></span>
+        <span><span class="title">Open Improv Jam</span></span>
       </li>
       <li data-event="2026-11-20-jest-friends" data-date="2026-11-21" data-time="">
         <span class="date">NOV 21 SAT</span>
-        <span><span class="title">Jest Friends</span>
-          <span class="info">time TBA</span></span>
+        <span><span class="title">Jest Friends</span></span>
       </li>
     </ul>
   </section>
@@ -487,9 +496,22 @@
   function goingText(id) {
     const n = counts[id] || 0, cap = capacity[id] || 0;
     if (cap && n >= cap) return "sold out";
-    if (cap) return n + " going · " + (cap - n) + " left";
-    return n ? n + " going" : "";
+    return cap ? (cap - n) + " left" : "";
   }
+
+  // show times: under the name on desktop, next to the date on phones
+  ticketRows.forEach((li) => {
+    if (!li.hasAttribute("data-time")) return;
+    const time = li.dataset.time || "time TBA";
+    const info = document.createElement("span");
+    info.className = "info";
+    info.textContent = time;
+    li.querySelector(".title").after(info);
+    const inline = document.createElement("span");
+    inline.className = "time";
+    inline.textContent = " · " + time;
+    li.querySelector(".date").appendChild(inline);
+  });
 
   ticketRows.forEach((li) => {
     if (li.dataset.tickets === "off" || li.dataset.date < today) return;   // past events: no tickets
