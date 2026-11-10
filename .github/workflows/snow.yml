@@ -1,0 +1,65 @@
+name: Snow report
+
+# Keeps the /snow/ page current. Each run pulls the data from the Google Sheet, fetches fresh NOAA observations,
+# pushes changes back to the Sheet, rebuilds snow/index.html and commits it. Needs two repository secrets:
+# SNOW_SHEET_URL and SNOW_SHEET_TOKEN (see snow/SETUP.md in the snow-tracker project).
+on:
+  schedule:
+    - cron: '30 15 * * *'   # 7:30 AM Pacific Standard Time (8:30 AM in daylight time)
+    - cron: '0 2 * * *'     # 6:00 PM Pacific Standard Time (7:00 PM in daylight time)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: snow-report
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache NOAA station lists
+        uses: actions/cache@v4
+        with:
+          path: snow/cache
+          key: noaa-stations-${{ hashFiles('snow/snowtrack.py') }}
+
+      - name: Check secrets
+        env:
+          SNOW_SHEET_URL: ${{ secrets.SNOW_SHEET_URL }}
+          SNOW_SHEET_TOKEN: ${{ secrets.SNOW_SHEET_TOKEN }}
+        run: |
+          if [ -z "$SNOW_SHEET_URL" ] || [ -z "$SNOW_SHEET_TOKEN" ]; then
+            echo "::error::Add the SNOW_SHEET_URL and SNOW_SHEET_TOKEN repository secrets (Settings > Secrets and variables > Actions)."
+            exit 1
+          fi
+
+      - name: Update data and rebuild the page
+        working-directory: snow
+        env:
+          SNOW_SHEET_URL: ${{ secrets.SNOW_SHEET_URL }}
+          SNOW_SHEET_TOKEN: ${{ secrets.SNOW_SHEET_TOKEN }}
+          SNOWTRACK_UA: hyperfried-snow-report (github actions)
+          OUT: index.html
+        run: sh ./sync_run.sh
+
+      - name: Commit the page
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add snow/index.html
+          if git diff --cached --quiet; then
+            echo "No change to the page."
+          else
+            git commit -m "snow: update report"
+            git push
+          fi

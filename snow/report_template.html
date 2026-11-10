@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snow conditions</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb;
+  --ink: #0b0b0b; --ink2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,.10);
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s7: #4a3aa7;
+  --shade: rgba(11,11,11,.045); --warn: #ec835a; --wash: rgba(11,11,11,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19;
+    --ink: #ffffff; --ink2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,.10);
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s7: #9085e9;
+    --shade: rgba(255,255,255,.05); --wash: rgba(255,255,255,.07);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19;
+  --ink: #ffffff; --ink2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,.10);
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s7: #9085e9;
+  --shade: rgba(255,255,255,.05); --wash: rgba(255,255,255,.07);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+.snowbar { position: fixed; top: 0; bottom: 0; pointer-events: none; z-index: 0; display: none; }
+#snow-left { left: 0; -webkit-mask-image: linear-gradient(to right, #000 0%, #000 45%, transparent 100%); mask-image: linear-gradient(to right, #000 0%, #000 45%, transparent 100%); }
+#snow-right { right: 0; -webkit-mask-image: linear-gradient(to left, #000 0%, #000 45%, transparent 100%); mask-image: linear-gradient(to left, #000 0%, #000 45%, transparent 100%); }
+.wrap { position: relative; z-index: 1; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 20px; margin: 0 0 2px; font-weight: 650; }
+.sub { color: var(--ink2); margin: 0 0 16px; font-size: 13px; }
+[role=tablist] { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+[role=tab] { appearance: none; text-align: left; display: flex; flex-direction: column; gap: 6px; min-width: 156px; max-width: 230px;
+  background: var(--surface); color: var(--ink2); font: inherit; padding: 8px 10px; cursor: pointer; border: 1px solid var(--border); border-radius: 10px; }
+[role=tab]:hover { background: var(--wash); }
+[role=tab][aria-selected=true] { color: var(--ink); border-color: var(--s1); box-shadow: inset 0 0 0 1px var(--s1); font-weight: 600; }
+.t-name { line-height: 1.2; }
+.t-meters { display: flex; flex-direction: column; gap: 3px; font-weight: 400; }
+.meter { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--ink2); font-weight: 400; white-space: nowrap; }
+.m-lbl { width: 44px; color: var(--muted); }
+.trk { display: inline-block; width: 64px; height: 6px; border-radius: 3px; background: var(--grid); overflow: hidden; flex: none; box-sizing: border-box; }
+.trk.nogauge { background: none; border: 1px dashed var(--muted); }
+.fill { display: block; height: 100%; background: var(--s1); border-radius: 3px; }
+.m-val { color: var(--ink); font-variant-numeric: tabular-nums; min-width: 38px; }
+.m-trend, .m-warn { color: var(--ink); }
+.seg button .meter { margin-left: 8px; }
+.tabgroup { flex-basis: 100%; color: var(--muted); font-size: 12px; margin: 6px 0 -2px; }
+.metercap { color: var(--muted); font-size: 12px; margin: -8px 0 12px; }
+[role=tab]:focus-visible, button:focus-visible { outline: 2px solid var(--s1); outline-offset: 2px; }
+.panel[hidden] { display: none; }
+.loc-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin-bottom: 12px; }
+.loc-title h2 { margin: 0; font-size: 18px; }
+.loc-title span { color: var(--ink2); font-size: 13px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 12px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.kpi .lbl { color: var(--ink2); font-size: 12px; margin-bottom: 4px; }
+.kpi .big { font-size: 48px; line-height: 1.05; font-weight: 600; letter-spacing: -.5px; }
+.kpi .big small { font-size: 18px; font-weight: 500; color: var(--ink2); margin-left: 4px; letter-spacing: 0; }
+.kpi .val { font-size: 22px; font-weight: 600; }
+.kpi .note { color: var(--ink2); font-size: 12px; margin-top: 4px; }
+.alert { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--border); border-left: 4px solid var(--warn);
+  background: var(--surface); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; font-size: 13px; }
+.alert b { white-space: nowrap; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-bottom: 12px; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface); }
+.seg button { appearance: none; border: 0; background: none; color: var(--ink2); font: inherit; padding: 5px 12px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--border); }
+.seg button:hover { background: var(--wash); }
+.seg button[aria-pressed=true] { background: var(--wash); color: var(--ink); font-weight: 600; }
+.charts { display: grid; gap: 12px; }
+.chart-card h3 { margin: 0; font-size: 14px; font-weight: 600; }
+.chart-card .desc { color: var(--ink2); font-size: 12px; margin: 0 0 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12px; color: var(--ink2); margin-bottom: 4px; }
+.legend i { display: inline-block; vertical-align: middle; margin-right: 6px; }
+.legend .k-line { width: 16px; height: 0; border-top: 2px solid; }
+.legend .k-dash { width: 16px; height: 0; border-top: 2px dashed; }
+.legend .k-dot { width: 9px; height: 9px; border-radius: 50%; }
+.legend .k-bar { width: 9px; height: 12px; border-radius: 3px 3px 0 0; }
+.legend .k-band { width: 14px; height: 10px; border-radius: 2px; opacity: .25; }
+.plot { position: relative; }
+.plot svg { display: block; width: 100%; overflow: visible; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.18); padding: 8px 10px; font-size: 12px; white-space: nowrap; z-index: 5; display: none; }
+.tip .th { font-weight: 600; margin-bottom: 4px; }
+.tip .tr { display: flex; align-items: center; gap: 6px; color: var(--ink2); }
+.tip .tr b { color: var(--ink); margin-left: auto; padding-left: 14px; font-weight: 600; }
+.tip .sw { width: 8px; height: 8px; border-radius: 50%; }
+.tip .tx { color: var(--muted); margin-top: 3px; }
+table { border-collapse: collapse; width: 100%; font-size: 12px; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--ink2); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
+td.est { font-style: italic; color: var(--ink2); }
+.tablewrap { overflow: auto; max-height: 560px; }
+.route-stats { color: var(--ink2); font-size: 13px; margin: -6px 0 12px; }
+.details { margin-top: 12px; }
+.foot { color: var(--ink2); font-size: 12px; margin-top: 12px; }
+.foot p { margin: 4px 0; }
+svg text { font: 11px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+svg text.lbl { fill: var(--ink2); }
+</style>
+</head>
+<body>
+<canvas class="snowbar" id="snow-left" aria-hidden="true"></canvas>
+<canvas class="snowbar" id="snow-right" aria-hidden="true"></canvas>
+<div class="wrap">
+  <h1>Snow conditions</h1>
+  <p class="sub" id="sub"></p>
+  <div class="controls" id="modebar"></div>
+  <p class="metercap" id="metercap">Tab meters show the estimated snow depth now. The bar is square-root scaled to 60 in; a dashed bar means no depth gauge nearby (estimated from snowfall reports); ▲▼ is the change over 3 days; ⚠ means possible unrecorded snow. Hover a tab for details.</p>
+  <div role="tablist" aria-label="Locations" id="tabs"></div>
+  <div id="panels"></div>
+</div>
+<script>
+const REPORT = /*__DATA__*/null;
+const NS = 'http://www.w3.org/2000/svg';
+const RANGES = [['24h', '24 hrs'], ['3d', '3 days'], ['5d', '5 days'], [14, '14 days'], [30, '30 days'], [90, '90 days'], [0, 'All']];
+const SHORT_HOURS = { '24h': 24, '3d': 72, '5d': 120 }, SHORT_DAYS = { '24h': 2, '3d': 3, '5d': 5 };
+const isShort = () => Object.prototype.hasOwnProperty.call(SHORT_HOURS, state.range);
+const dayCount = () => state.range === 0 ? Infinity : isShort() ? SHORT_DAYS[state.range] : state.range;
+const hourSlice = arr => arr.slice(Math.max(0, arr.length - (SHORT_HOURS[state.range] || arr.length)));
+const hrLabel = t => { const h = +t.slice(11, 13); return h === 0 ? fmtDate(t.slice(0, 10)) : (h % 12 || 12) + (h < 12 ? 'a' : 'p'); };
+const hrHead = t => { const h = +t.slice(11, 13); return fmtDate(t.slice(0, 10)) + ', ' + (h % 12 || 12) + (h < 12 ? ' am' : ' pm'); };
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const state = { range: 30, view: 'charts', active: 0 };
+let panels = [];   // active mode's {loc|route, root, charts:[], rendered}
+
+const fmtDate = s => { const [, m, d] = s.split('-'); return MONTHS[+m - 1] + ' ' + (+d); };
+const f1 = v => v == null ? '–' : (Math.round(v * 10) / 10).toFixed(1);
+const f0 = v => v == null ? '–' : Math.round(v).toString();
+function h(tag, attrs = {}, kids = []) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') e.className = v; else if (k === 'text') e.textContent = v; else if (k === 'html') e.innerHTML = v; else e.setAttribute(k, v);
+  }
+  for (const c of [].concat(kids)) if (c != null) e.append(c);
+  return e;
+}
+function s(tag, attrs = {}, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  if (parent) parent.append(e);
+  return e;
+}
+function niceTicks(lo, hi, n = 4) {
+  if (hi === lo) hi = lo + 1;
+  const raw = (hi - lo) / n, p = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * p).find(v => v >= raw);
+  const a = Math.floor(lo / step) * step, b = Math.ceil(hi / step) * step, out = [];
+  for (let v = a; v <= b + 1e-9; v += step) out.push(+v.toFixed(6));
+  return out;
+}
+
+/* ------------------------------------------------------------ chart ---- */
+function makeChart(host, days, cfg) {
+  const H = cfg.height || 200, ml = 40, mr = 64, mt = 10, mb = 24;
+  const plot = h('div', { class: 'plot' });
+  const tip = h('div', { class: 'tip' });
+  host.append(plot);
+  plot.append(tip);
+  let svg = null, W = 0, ctx = null;
+
+  function draw() {
+    if (svg) svg.remove();
+    W = Math.max(320, plot.clientWidth || host.clientWidth || 640);
+    svg = s('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': cfg.aria(days) });
+    plot.insertBefore(svg, tip);
+    const n = days.length, pw = W - ml - mr, ph = H - mt - mb, bw = pw / Math.max(1, n);
+    const X = i => ml + (i + .5) * bw;
+    const vals = [];
+    for (const se of cfg.series) days.forEach((d, i) => { const v = se.get(d, i); if (v != null) vals.push(v); });
+    if (cfg.band) days.forEach(d => { const b = cfg.band.get(d); if (b) vals.push(b[0], b[1]); });
+    let lo = cfg.yMin != null ? cfg.yMin : Math.min(...vals, 0), hi = Math.max(...vals, cfg.yMinMax || 0);
+    if (cfg.ref) { lo = Math.min(lo, cfg.ref.y); hi = Math.max(hi, cfg.ref.y); }
+    if (!isFinite(lo)) lo = 0;
+    const ticks = niceTicks(lo, hi, 4), y0 = ticks[0], y1 = ticks[ticks.length - 1];
+    const Y = v => mt + ph - (v - y0) / (y1 - y0) * ph;
+
+    // shaded "estimated / awaiting data" region
+    const sh = cfg.shade ? cfg.shade(days) : null;
+    if (sh != null && sh < n) {
+      s('rect', { x: ml + sh * bw, y: mt, width: W - mr - (ml + sh * bw), height: ph, fill: 'var(--shade)' }, svg);
+      s('text', { x: ml + sh * bw + 6, y: mt + 11, class: 'lbl' }, svg).textContent = cfg.shadeLabel;
+    }
+    // grid + y ticks
+    for (const t of ticks) {
+      s('line', { x1: ml, x2: W - mr, y1: Y(t), y2: Y(t), stroke: t === y0 ? 'var(--axis)' : 'var(--grid)', 'stroke-width': 1 }, svg);
+      const tx = s('text', { x: ml - 6, y: Y(t) + 4, 'text-anchor': 'end' }, svg); tx.textContent = (Math.round(t * 10) / 10).toString();
+    }
+    // x labels
+    const step = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(pw / 64))));
+    days.forEach((d, i) => { if ((n - 1 - i) % step === 0) { const t = s('text', { x: X(i), y: H - 6, 'text-anchor': 'middle' }, svg); t.textContent = cfg.xLabel ? cfg.xLabel(d) : fmtDate(d.d); } });
+    // reference line
+    if (cfg.ref) {
+      s('line', { x1: ml, x2: W - mr, y1: Y(cfg.ref.y), y2: Y(cfg.ref.y), stroke: 'var(--muted)', 'stroke-width': 1, 'stroke-dasharray': '2 3' }, svg);
+      s('text', { x: W - mr + 6, y: Y(cfg.ref.y) + 4, class: 'lbl' }, svg).textContent = cfg.ref.label;
+    }
+    // uncertainty band
+    if (cfg.band) {
+      let up = [], dn = [];
+      const flush = () => { if (up.length > 1) s('path', { d: 'M' + up.join('L') + 'L' + dn.reverse().join('L') + 'Z', fill: cfg.band.color, opacity: .15 }, svg); up = []; dn = []; };
+      days.forEach((d, i) => { const b = cfg.band.get(d); if (b) { up.push(`${X(i)},${Y(b[1])}`); dn.push(`${X(i)},${Y(b[0])}`); } else flush(); });
+      flush();
+    }
+    const ends = [];
+    for (const se of cfg.series) {
+      let last = -1;
+      if (se.type === 'bars') {
+        const w = Math.min(24, bw - 2);
+        days.forEach((d, i) => {
+          const v = se.get(d, i); if (v == null || v <= 0) return;
+          const top = Y(v), base = Y(Math.max(0, y0)), r = Math.min(4, w / 2, base - top);
+          s('path', { d: `M${X(i) - w / 2},${base}V${top + r}Q${X(i) - w / 2},${top} ${X(i) - w / 2 + r},${top}H${X(i) + w / 2 - r}Q${X(i) + w / 2},${top} ${X(i) + w / 2},${top + r}V${base}Z`, fill: se.color }, svg);
+          last = i;
+        });
+        days.forEach((d, i) => { if (se.get(d, i) != null) last = i; });
+        if (se.endLabel && last >= 0) ends.push({ x: X(last), y: Y(se.get(days[last], last)) - 8, text: se.label, anchor: 'middle', i: last });
+      } else {
+        let seg = [];
+        const flush = () => { if (seg.length > 1) s('path', { d: 'M' + seg.join('L'), fill: 'none', stroke: se.color, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'stroke-dasharray': se.dashed ? '5 4' : '' }, svg); seg = []; };
+        days.forEach((d, i) => { const v = se.get(d, i); if (v == null) { flush(); return; } seg.push(`${X(i)},${Y(v)}`); last = i; });
+        flush();
+        if (se.dots !== false) days.forEach((d, i) => {
+          const v = se.get(d, i); if (v == null) return;
+          if (se.type === 'dots' || n <= 40 || i === last) s('circle', { cx: X(i), cy: Y(v), r: i === last || se.type === 'dots' ? 4.5 : 4, fill: se.hollow ? 'var(--surface)' : se.color, stroke: se.hollow ? se.color : 'var(--surface)', 'stroke-width': 2 }, svg);
+        });
+        if (se.endLabel && last >= 0) ends.push({ x: X(last) + 10, y: Y(se.get(days[last], last)) + 4, text: se.label, anchor: 'start', i: last });
+      }
+    }
+    // end labels: nudge apart
+    ends.sort((a, b) => a.y - b.y);
+    for (let k = 1; k < ends.length; k++) if (ends[k].anchor === 'start' && ends[k - 1].anchor === 'start' && ends[k].y - ends[k - 1].y < 13) ends[k].y = ends[k - 1].y + 13;
+    for (const e of ends) { const t = s('text', { x: e.x, y: e.y, 'text-anchor': e.anchor, class: 'lbl' }, svg); t.textContent = e.text; }
+
+    // hover layer
+    const cross = s('line', { y1: mt, y2: mt + ph, stroke: 'var(--muted)', 'stroke-width': 1, visibility: 'hidden' }, svg);
+    const marks = s('g', {}, svg);
+    const hit = s('rect', { x: ml, y: mt, width: pw, height: ph, fill: 'transparent', style: 'cursor:crosshair' }, svg);
+    ctx = { X, Y, cross, marks, n, bw, W };
+    hit.addEventListener('pointermove', ev => {
+      const r = hit.getBoundingClientRect();
+      const i = Math.min(n - 1, Math.max(0, Math.floor((ev.clientX - r.left) / r.width * n)));
+      cfg.onHover(i, true);
+    });
+    hit.addEventListener('pointerleave', () => cfg.onHover(null, true));
+  }
+
+  function setHover(i, showTip) {
+    if (!ctx) return;
+    ctx.marks.replaceChildren();
+    if (i == null) { ctx.cross.setAttribute('visibility', 'hidden'); tip.style.display = 'none'; return; }
+    const d = days[i], x = ctx.X(i);
+    ctx.cross.setAttribute('x1', x); ctx.cross.setAttribute('x2', x); ctx.cross.setAttribute('visibility', 'visible');
+    const rows = [];
+    for (const se of cfg.series) {
+      const v = se.get(d, i);
+      if (v != null && se.type !== 'bars') s('circle', { cx: x, cy: ctx.Y(v), r: 5, fill: se.color, stroke: 'var(--surface)', 'stroke-width': 2 }, ctx.marks);
+      rows.push(`<div class="tr"><span class="sw" style="background:${se.color}"></span>${se.label}<b>${v == null ? '–' : cfg.fmt(v)}</b></div>`);
+    }
+    const extra = cfg.extra ? cfg.extra(d) : '';
+    tip.innerHTML = `<div class="th">${cfg.head ? cfg.head(d) : fmtDate(d.d)}</div>${rows.join('')}${extra ? `<div class="tx">${extra}</div>` : ''}`;
+    if (showTip) {
+      tip.style.display = 'block';
+      const tw = tip.offsetWidth, left = x > ctx.W / 2 ? x - tw - 12 : x + 12;
+      tip.style.left = Math.max(0, left) + 'px'; tip.style.top = '8px';
+    } else tip.style.display = 'none';
+  }
+
+  draw();
+  return { draw, setHover };
+}
+
+/* ------------------------------------------------------- panel build ---- */
+function legend(items) {
+  return h('div', { class: 'legend' }, items.map(it => h('span', {}, [h('i', { class: 'k-' + it.k, style: it.k === 'line' || it.k === 'dash' ? `border-color:${it.c}` : `background:${it.c}` }), it.t])));
+}
+function windowed(loc) {
+  const all = loc.days, n = Math.min(all.length, dayCount());
+  return all.slice(all.length - n);
+}
+function trailingFrom(days, pred) {   // first index of the unbroken trailing run satisfying pred
+  let i = days.length; while (i > 0 && pred(days[i - 1])) i--; return i;
+}
+
+function chartDefs(loc, days) {
+  const hasDepthObs = days.some(d => d.depth != null);
+  const estLine = (d, i) => d.kind !== 'observed' && d.kind != null ? d.est : (days[i + 1] && days[i + 1].kind !== 'observed' ? d.est : null);
+  const depth = {
+    title: loc.summary.mode === 'gauge' ? 'Snow depth: measured and estimated' : 'Snow depth: estimated from reported snowfall',
+    desc: loc.summary.mode === 'gauge' ? 'Measured by the nearest gauge; dashed = model estimate for days NOAA has not published yet.' : 'No depth gauge in range, so depth is accumulated snowfall minus modeled melt, starting at 0 on the first day shown in the data.',
+    legend: [...(hasDepthObs ? [{ k: 'line', c: 'var(--s1)', t: 'Measured depth' }] : []), { k: 'dash', c: 'var(--s1)', t: 'Estimated depth' }, { k: 'band', c: 'var(--s1)', t: 'Likely range' }],
+    cfg: {
+      series: [...(hasDepthObs ? [{ label: 'Measured', color: 'var(--s1)', type: 'line', get: d => d.depth, endLabel: true }] : []),
+               { label: 'Estimated', color: 'var(--s1)', type: 'line', dashed: true, dots: false, get: estLine, endLabel: true }],
+      band: { color: 'var(--s1)', get: d => d.kind !== 'observed' && d.kind != null ? [d.lo_b, d.hi_b] : null },
+      yMinMax: 4, yMin: 0, fmt: v => f1(v) + ' in', shade: ds => trailingFrom(ds, d => d.kind !== 'observed'), shadeLabel: 'Estimated',
+      extra: d => d.kind === 'observed' ? (d.src.snow_depth || '') : `Model estimate (${f1(d.lo_b)}–${f1(d.hi_b)} in)`,
+      aria: ds => `Snow depth, last value ${f1(ds[ds.length - 1].est)} inches`
+    }
+  };
+  const snowfall = {
+    title: 'Daily snowfall', desc: 'New snow reported by the nearest gauge (inches). Shaded days have no report yet.',
+    legend: null,
+    cfg: {
+      series: [{ label: 'Snowfall', color: 'var(--s1)', type: 'bars', get: d => d.snow }],
+      yMin: 0, yMinMax: 2, fmt: v => f1(v) + ' in', shade: ds => trailingFrom(ds, d => d.snow == null), shadeLabel: 'Awaiting NOAA report',
+      extra: d => d.src.snowfall || (d.snow == null ? 'No report' : ''),
+      aria: ds => 'Daily snowfall in inches'
+    }
+  };
+  const temp = {
+    title: 'Temperature', desc: 'Daily high and low (°F). Dotted line marks freezing.',
+    legend: [{ k: 'line', c: 'var(--s2)', t: 'High' }, { k: 'line', c: 'var(--s3)', t: 'Low' }],
+    cfg: {
+      series: [{ label: 'High', color: 'var(--s2)', type: 'line', get: d => d.hi, endLabel: true }, { label: 'Low', color: 'var(--s3)', type: 'line', get: d => d.lo, endLabel: true }],
+      ref: { y: 32, label: '32°F' }, fmt: v => f0(v) + '°F', extra: d => d.src.temp_high || '',
+      aria: ds => 'Daily high and low temperature in Fahrenheit'
+    }
+  };
+  const wind = {
+    title: 'Wind', desc: 'Average wind (bars) and peak 2-minute gust (dots), mph.',
+    legend: [{ k: 'bar', c: 'var(--s7)', t: 'Average' }, { k: 'dot', c: 'var(--s7)', t: 'Peak gust' }],
+    cfg: {
+      series: [{ label: 'Avg', color: 'var(--s7)', type: 'bars', get: d => d.wavg, endLabel: true },
+               { label: 'Peak', color: 'var(--s7)', type: 'dots', hollow: true, get: d => d.wpk, endLabel: true }],
+      yMin: 0, fmt: v => f1(v) + ' mph', extra: d => d.src.wind_avg || '',
+      aria: ds => 'Daily average wind and peak gust in miles per hour'
+    }
+  };
+  if (isShort() && loc.hourly && loc.hourly.some(d => d.temp != null)) {
+    const hrs = hourSlice(loc.hourly), tsrc = (hrs.slice().reverse().find(d => d.tsrc) || {}).tsrc || '', wsrc = (hrs.slice().reverse().find(d => d.wsrc) || {}).wsrc || '';
+    const hx = { xLabel: d => hrLabel(d.t), head: d => hrHead(d.t) };
+    temp.title = 'Temperature, hourly'; temp.data = hrs; temp.legend = null;
+    temp.desc = 'Hourly station readings in °F' + (hrs.some(d => d.temp_raw != null && d.temp !== d.temp_raw) ? ', adjusted to the spot\'s elevation' : '') + '. Dotted line marks freezing.' + (tsrc ? ' Station: ' + tsrc + '.' : '');
+    temp.cfg = Object.assign({}, hx, { series: [{ label: 'Temp', color: 'var(--s2)', type: 'line', dots: false, get: d => d.temp }], ref: { y: 32, label: '32°F' }, fmt: v => f0(v) + '°F', extra: () => '', aria: () => 'Hourly temperature in Fahrenheit' });
+    wind.title = 'Wind, hourly'; wind.data = hrs;
+    wind.desc = 'Hourly average wind (line) and strongest gust (dots), mph.' + (wsrc ? ' Station: ' + wsrc + '.' : '');
+    wind.legend = [{ k: 'line', c: 'var(--s7)', t: 'Average' }, { k: 'dot', c: 'var(--s7)', t: 'Gust' }];
+    wind.cfg = Object.assign({}, hx, { series: [{ label: 'Avg', color: 'var(--s7)', type: 'line', dots: false, get: d => d.wind, endLabel: true }, { label: 'Gust', color: 'var(--s7)', type: 'dots', hollow: true, get: d => d.gust, endLabel: true }], yMin: 0, fmt: v => f1(v) + ' mph', extra: () => '', aria: () => 'Hourly wind speed and gusts in miles per hour' });
+  }
+  return [depth, snowfall, temp, wind];
+}
+
+function buildSummary(loc) {
+  const sm = loc.summary, L = loc.days, last = L[L.length - 1];
+  const kpis = h('div', { class: 'kpis' });
+  const unit = h('small', { text: 'in' });
+  kpis.append(h('div', { class: 'card kpi' }, [
+    h('div', { class: 'lbl', text: `Estimated snow depth, ${fmtDate(last.d)}` }),
+    h('div', { class: 'big' }, [f1(sm.now), unit]),
+    h('div', { class: 'note', text: `Likely range ${f1(sm.now_lo)}–${f1(sm.now_hi)} in · ` + (sm.mode === 'gauge' ? 'anchored to the last gauge reading' : 'accumulated from snowfall reports (no depth gauge)') })
+  ]));
+  kpis.append(h('div', { class: 'card kpi' }, [
+    h('div', { class: 'lbl', text: 'Last measured depth' }),
+    sm.last_obs_date ? h('div', { class: 'val', text: `${f1(sm.last_obs_depth)} in · ${fmtDate(sm.last_obs_date)}` }) : h('div', { class: 'val', text: 'None in range' }),
+    h('div', { class: 'note', text: sm.last_obs_date ? `${sm.last_obs_src || ''} · ${sm.days_since_obs} day${sm.days_since_obs === 1 ? '' : 's'} ago` : 'No nearby station reports snow depth. Try a larger --radius.' })
+  ]));
+  const sc = sm.score;
+  kpis.append(h('div', { class: 'card kpi' }, [
+    h('div', { class: 'lbl', text: 'Model' }),
+    h('div', { class: 'val', text: `${sm.k.toFixed(2)} in per °F-day melt` }),
+    h('div', { class: 'note', text: (sm.k_fitted ? `Fitted from ${sm.k_days} thaw days. ` : `Default value; needs 10+ snow-free thaw days with measured depth (${sm.k_days} so far). `) +
+      (sc ? `One-day error ${f1(sc.mae)} in vs ${f1(sc.naive_mae)} in for "same as yesterday" (${sc.n} days).` : 'Not enough snow-cover history to score yet.') })
+  ]));
+  const frag = document.createDocumentFragment();
+  frag.append(kpis);
+  if (sm.cold_unknown_days > 0) {
+    frag.append(h('div', { class: 'alert', role: 'note' }, [h('b', { text: '⚠ Possible unrecorded snow' }),
+      h('span', { text: `${sm.cold_unknown_days} cold day${sm.cold_unknown_days === 1 ? '' : 's'} (average ≤ 34°F) since the last snowfall report have no snowfall data. The model counts them as 0 in, so the real depth could be higher.` })]));
+  } else if (sm.unknown_snow_days > 0) {
+    frag.append(h('div', { class: 'alert', role: 'note' }, [h('b', { text: 'ⓘ Recent days pending' }),
+      h('span', { text: `${sm.unknown_snow_days} recent day${sm.unknown_snow_days === 1 ? '' : 's'} have no snowfall report yet (NOAA posts daily data a few days late). They are counted as 0 in.` })]));
+  }
+  return frag;
+}
+
+function buildTable(loc, days) {
+  const cols = ['Date', 'High °F', 'Low °F', 'Snowfall in', 'Depth in', 'Wind avg mph', 'Peak mph', 'Precip in'];
+  const t = h('table', {}, [h('thead', {}, [h('tr', {}, cols.map(c => h('th', { text: c })))])]);
+  const tb = h('tbody'); t.append(tb);
+  for (const d of [...days].reverse()) {
+    const est = d.kind !== 'observed';
+    tb.append(h('tr', {}, [h('td', { text: d.d }), h('td', { text: f1(d.hi) }), h('td', { text: f1(d.lo) }), h('td', { text: f1(d.snow) }),
+      h('td', { class: est ? 'est' : '', text: est ? `${f1(d.est)} est.` : f1(d.depth), title: est ? `range ${f1(d.lo_b)}–${f1(d.hi_b)}` : '' }),
+      h('td', { text: f1(d.wavg) }), h('td', { text: f1(d.wpk) }), h('td', { text: f1(d.precip) })]));
+  }
+  return h('div', { class: 'card tablewrap' }, [t]);
+}
+
+function sourcesNote(loc) {
+  const by = {};
+  for (const d of loc.days) for (const [k, v] of Object.entries(d.src)) (by[k] = by[k] || new Set()).add(v);
+  const names = { temp_high: 'Temperature', snowfall: 'Snowfall', snow_depth: 'Snow depth', wind_avg: 'Wind', precip: 'Precipitation' };
+  const f = h('div', { class: 'foot' });
+  for (const [k, label] of Object.entries(names)) if (by[k]) f.append(h('p', { text: `${label}: ${[...by[k]].join(' · ')}` }));
+  f.append(h('p', { text: 'Stations can be miles away and at a different elevation than the spot, especially for summits. Treat the estimate as a trend indicator, not a measurement.' }));
+  return f;
+}
+
+function renderPanel(p) {
+  const { loc, root } = p;
+  root.replaceChildren();
+  const days = windowed(loc);
+  if (!p.embedded) root.append(h('div', { class: 'loc-title' }, [h('h2', { text: loc.label }),
+    h('span', { text: `${loc.note ? loc.note + ' · ' : ''}${loc.lat.toFixed(4)}, ${loc.lon.toFixed(4)} · data through ${fmtDate(loc.days[loc.days.length - 1].d)}` })]));
+  root.append(buildSummary(loc));
+
+  const seg = (opts, cur, on) => h('div', { class: 'seg' }, opts.map(([v, t]) => { const b = h('button', { type: 'button', 'aria-pressed': String(v === cur), text: t }); b.addEventListener('click', () => on(v)); return b; }));
+  if (!p.embedded) root.append(h('div', { class: 'controls' }, [
+    seg(RANGES, state.range, v => { state.range = v; panels.forEach(q => q.rendered = false); renderPanel(p); p.rendered = true; }),
+    seg([['charts', 'Charts'], ['table', 'Table']], state.view, v => { state.view = v; panels.forEach(q => q.rendered = false); renderPanel(p); p.rendered = true; })
+  ]));
+  if (isShort() && !p.embedded) root.append(h('p', { class: 'metercap', text: 'Temperature and wind are hourly (NWS stations). Snowfall and snow depth only exist daily, and NOAA posts them with a lag, so the newest days are estimated.' }));
+  p.charts = [];
+  if (state.view === 'table' && !p.embedded) root.append(buildTable(loc, days));
+  else {
+    const grid = h('div', { class: 'charts' }); root.append(grid);
+    const hoverAll = (i, fromUser) => p.charts.forEach(c => c.setHover(i, c === p.hovered && i != null));
+    for (const def of chartDefs(loc, days)) {
+      const card = h('div', { class: 'card chart-card' }, [h('h3', { text: def.title }), h('p', { class: 'desc', text: def.desc })]);
+      if (def.legend) card.append(legend(def.legend));
+      grid.append(card);
+      let ch;
+      const cfg = Object.assign({}, def.cfg, { onHover: (i) => { p.hovered = ch; hoverAll(i); } });
+      ch = makeChart(card, def.data || days, cfg);
+      p.charts.push(ch);
+    }
+  }
+  root.append(sourcesNote(loc));
+}
+
+/* ----------------------------------------------------------- routes ---- */
+const METER_FULL_IN = 60;
+function snowMeter(label, sp) {
+  const sm = sp.summary, d = sp.days, now = sm.now == null ? 0 : sm.now;
+  const prev = d.length > 3 ? d[d.length - 4].est : null, delta = prev == null ? 0 : now - prev;
+  const arrow = delta >= 0.5 ? '▲' : delta <= -0.5 ? '▼' : '';
+  const pct = now > 0.05 ? Math.max(4, Math.round(100 * Math.min(1, Math.sqrt(now / METER_FULL_IN)))) : 0;
+  const warn = sm.cold_unknown_days > 0;
+  const tip = `${label ? label + ': ' : ''}est. ${f1(now)} in (likely ${f1(sm.now_lo)}–${f1(sm.now_hi)})`
+    + (arrow ? `, ${delta > 0 ? 'up' : 'down'} ${f1(Math.abs(delta))} in over 3 days` : ', steady over 3 days')
+    + (sm.last_obs_date ? `; last measured ${f1(sm.last_obs_depth)} in on ${fmtDate(sm.last_obs_date)}` : '; no depth gauge nearby')
+    + (warn ? '; possible unrecorded snow' : '');
+  const trk = h('span', { class: 'trk' + (sm.mode === 'gauge' ? '' : ' nogauge') }, [h('span', { class: 'fill', style: `width:${pct}%` })]);
+  return h('span', { class: 'meter', title: tip }, [label ? h('span', { class: 'm-lbl', text: label }) : null, trk,
+    h('span', { class: 'm-val', text: f1(now) + ' in' }), arrow ? h('span', { class: 'm-trend', text: arrow }) : null, warn ? h('span', { class: 'm-warn', text: '⚠' }) : null]);
+}
+const ftTxt = sp => sp.elev_ft ? sp.elev_ft.toLocaleString() + ' ft' : '';
+const gaugeId = sp => (sp.summary.last_obs_src || '').split(' ')[0];
+const sliceRange = arr => arr.slice(arr.length - Math.min(arr.length, dayCount()));
+
+function mergedDays(top, base) {
+  const bmap = new Map(base.days.map(d => [d.d, d]));
+  return top.days.map(t => ({ d: t.d, t, b: bmap.get(t.d) || null }));
+}
+function alertFor(label, sm) {
+  if (sm.cold_unknown_days > 0)
+    return h('div', { class: 'alert', role: 'note' }, [h('b', { text: '⚠ ' + label }), h('span', { text: `${sm.cold_unknown_days} cold day${sm.cold_unknown_days === 1 ? '' : 's'} since the last snowfall report have no snowfall data. The model counts them as 0 in, so the real depth could be higher.` })]);
+  return null;
+}
+function sideCard(role, sp) {
+  const sm = sp.summary, last = sp.days[sp.days.length - 1];
+  return h('div', { class: 'card kpi' }, [
+    h('div', { class: 'lbl', text: `${role}${sp.elev_ft ? ' · ' + ftTxt(sp) : ''} · est. depth ${fmtDate(last.d)}` }),
+    h('div', { class: 'big' }, [f1(sm.now), h('small', { text: 'in' })]),
+    h('div', { class: 'note', text: `Likely ${f1(sm.now_lo)}–${f1(sm.now_hi)} in · ` + (sm.last_obs_date ? `last measured ${f1(sm.last_obs_depth)} in on ${fmtDate(sm.last_obs_date)}, ${sm.last_obs_src}` : 'no depth gauge nearby; accumulated from snowfall reports') })
+  ]);
+}
+function compareCard(top, base) {
+  const dt = top.summary.now - base.summary.now, a = top.days[top.days.length - 1], b = base.days[base.days.length - 1];
+  const same = gaugeId(top) && gaugeId(top) === gaugeId(base);
+  const tdiff = a.hi != null && b.hi != null ? `High today ${f0(a.hi)}°F up top vs ${f0(b.hi)}°F at the base. ` : '';
+  return h('div', { class: 'card kpi' }, [
+    h('div', { class: 'lbl', text: 'Summit minus base (estimated depth)' }),
+    h('div', { class: 'val', text: `${dt >= 0 ? '+' : ''}${f1(dt)} in` }),
+    h('div', { class: 'note', text: tdiff + (same ? `Both ends use the same gauge (${gaugeId(top)}), so this gap comes from the temperature adjustment, not a measurement.` : 'The ends use different gauges, so the gap includes real measurements.') })
+  ]);
+}
+function hourlyPair(top, base) {
+  const bmap = new Map(base.hourly.map(d => [d.t, d]));
+  return hourSlice(top.hourly.map(t => ({ t: t.t, a: t, b: bmap.get(t.t) || null })));
+}
+function routeChartDefs(rt, top, base) {
+  const T = 'Summit' + (top.elev_ft ? ` ${ftTxt(top)}` : ''), B = 'Base' + (base.elev_ft ? ` ${ftTxt(base)}` : '');
+  const pair = (key, o = {}) => [
+    { label: 'Summit', color: 'var(--s1)', type: 'line', endLabel: true, get: d => d.t[key], ...o },
+    { label: 'Base', color: 'var(--s2)', type: 'line', endLabel: true, get: d => d.b ? d.b[key] : null, ...o }];
+  const legend = [{ k: 'line', c: 'var(--s1)', t: T }, { k: 'line', c: 'var(--s2)', t: B }];
+  const srcOf = (day, k) => day ? (day.kind && day.kind !== 'observed' && k === 'snow_depth' ? 'estimate' : (day.src[k] || '')) : '';
+  const adj = top.days.some(d => d.t_adj) || base.days.some(d => d.t_adj);
+  const defs = [
+    { title: 'Snow depth: summit vs base', desc: 'Measured depth where a gauge reported it, model estimate for the newest days (shaded). Gauges are not at the exact spots; see the station and elevation offset in the tooltip.', legend,
+      cfg: { series: pair('est'), yMin: 0, yMinMax: 4, fmt: v => f1(v) + ' in',
+        shade: ds => trailingFrom(ds, d => d.t.kind !== 'observed' || (d.b && d.b.kind !== 'observed')), shadeLabel: 'Estimated',
+        extra: d => `Summit: ${srcOf(d.t, 'snow_depth') || '–'}<br>Base: ${srcOf(d.b, 'snow_depth') || '–'}`, aria: () => 'Estimated snow depth at the summit and the base, inches' } },
+    { title: 'Daily high temperature', desc: adj ? 'Station readings adjusted to each spot\'s elevation (3.5°F per 1,000 ft). Dotted line marks freezing.' : 'Daily high (°F). Dotted line marks freezing.', legend,
+      cfg: { series: pair('hi'), ref: { y: 32, label: '32°F' }, fmt: v => f0(v) + '°F',
+        extra: d => `Summit station: ${d.t.src.temp_high || '–'}<br>Base station: ${d.b ? (d.b.src.temp_high || '–') : '–'}`, aria: () => 'Daily high temperature at the summit and the base' } },
+    { title: 'Peak wind gust', desc: 'Fastest 2-minute wind (mph) from the nearest station reporting it.', legend,
+      cfg: { series: pair('wpk'), yMin: 0, fmt: v => f1(v) + ' mph',
+        extra: d => `Summit: ${d.t.src.wind_avg || '–'}<br>Base: ${d.b ? (d.b.src.wind_avg || '–') : '–'}`, aria: () => 'Peak wind gust at the summit and the base' } }
+  ];
+  if (isShort() && top.hourly && base.hourly && (top.hourly.some(d => d.temp != null) || base.hourly.some(d => d.temp != null))) {
+    const hp = hourlyPair(top, base), hx = { xLabel: d => hrLabel(d.t), head: d => hrHead(d.t) };
+    const hpair = (key, o = {}) => [
+      { label: 'Summit', color: 'var(--s1)', type: 'line', endLabel: true, dots: false, get: d => d.a[key], ...o },
+      { label: 'Base', color: 'var(--s2)', type: 'line', endLabel: true, dots: false, get: d => d.b ? d.b[key] : null, ...o }];
+    const src = (d, k) => `Summit: ${d.a[k] || '–'}<br>Base: ${d.b ? (d.b[k] || '–') : '–'}`;
+    Object.assign(defs[1], { title: 'Temperature, hourly', data: hp, desc: 'Hourly station readings in °F, adjusted to each spot\'s elevation (3.5°F per 1,000 ft). Dotted line marks freezing.',
+      cfg: Object.assign({}, hx, { series: hpair('temp'), ref: { y: 32, label: '32°F' }, fmt: v => f0(v) + '°F', extra: d => src(d, 'tsrc'), aria: () => 'Hourly temperature at the summit and the base' }) });
+    Object.assign(defs[2], { title: 'Peak wind gust, hourly', data: hp, desc: 'Strongest gust each hour (mph) from the nearest station reporting it.',
+      cfg: Object.assign({}, hx, { series: hpair('gust'), yMin: 0, fmt: v => f1(v) + ' mph', extra: d => src(d, 'wsrc'), aria: () => 'Hourly peak wind gust at the summit and the base' }) });
+  }
+  return defs;
+}
+function renderRoute(rp) {
+  const { route: rt, root } = rp, top = REPORT.spots[rt.top], base = REPORT.spots[rt.base];
+  root.replaceChildren();
+  const bits = [rt.date, rt.distance_km != null ? `${(rt.distance_km * 0.621371).toFixed(1)} mi` : null, rt.gain_m != null ? `+${Math.round(rt.gain_m * 3.28084).toLocaleString()} ft gain` : null,
+    top.elev_ft && base.elev_ft ? `${ftTxt(base)} → ${ftTxt(top)}` : null].filter(Boolean);
+  root.append(h('div', { class: 'loc-title' }, [h('h2', { text: rt.name }), h('span', { text: bits.join(' · ') })]));
+  root.append(h('div', { class: 'route-stats', text: `Summit spot ${top.lat.toFixed(4)}, ${top.lon.toFixed(4)} · base spot ${base.lat.toFixed(4)}, ${base.lon.toFixed(4)}` + (rt.span_km > 20 ? ' · the map covers a wide area, so check these two spots (edit routes.csv)' : '') }));
+  root.append(h('div', { class: 'kpis' }, [sideCard('Summit', top), sideCard('Base', base), compareCard(top, base)]));
+  for (const [lab, sp] of [['Summit', top], ['Base', base]]) { const a = alertFor(lab + ': possible unrecorded snow', sp.summary); if (a) root.append(a); }
+
+  const seg = (opts, cur, on) => h('div', { class: 'seg' }, opts.map(([v, t, extra]) => { const b = h('button', { type: 'button', 'aria-pressed': String(v === cur) }, [t, extra]); b.addEventListener('click', () => on(v)); return b; }));
+  root.append(h('div', { class: 'controls' }, [
+    seg(RANGES, state.range, v => { state.range = v; panels.forEach(q => q.rendered = false); renderRoute(rp); rp.rendered = true; }),
+    seg([['', 'Hide details'], ['top', 'Summit details', snowMeter(null, top)], ['base', 'Base details', snowMeter(null, base)]], rp.detail || '', v => { rp.detail = v; renderRoute(rp); })
+  ]));
+  rp.charts = [];
+  if (isShort()) root.append(h('p', { class: 'metercap', text: 'Temperature and wind are hourly (NWS stations). Snow depth only exists daily, and NOAA posts it with a lag, so the newest days are estimated.' }));
+  const days = sliceRange(mergedDays(top, base)), grid = h('div', { class: 'charts' });
+  root.append(grid);
+  const hoverAll = i => rp.charts.forEach(c => c.setHover(i, c === rp.hovered && i != null));
+  for (const def of routeChartDefs(rt, top, base)) {
+    const card = h('div', { class: 'card chart-card' }, [h('h3', { text: def.title }), h('p', { class: 'desc', text: def.desc }), legend(def.legend)]);
+    grid.append(card);
+    let ch;
+    ch = makeChart(card, def.data || days, Object.assign({}, def.cfg, { onHover: i => { rp.hovered = ch; hoverAll(i); } }));
+    rp.charts.push(ch);
+  }
+  if (rp.detail) {
+    const sp = rp.detail === 'top' ? top : base, box = h('div', { class: 'details' });
+    root.append(box);
+    const sub = { loc: sp, root: box, embedded: true, charts: [], rendered: true };
+    renderPanel(sub);
+    rp.charts.push(...sub.charts);
+  }
+  root.append(h('div', { class: 'foot' }, [h('p', { text: `Source file: ${rt.source}. Each end uses the nearest NOAA stations ranked by distance and elevation; the station offsets are in the tooltips. Estimates are trend indicators, not measurements.` })]));
+}
+
+/* ------------------------------------------------------- snow scenes ---- */
+// Decorative side bands. Each shows the selected spot's weather: snow falls in proportion to its estimated depth
+// (nothing falls and the peaks stay bare at ~0 in) and wind slants the flakes, pulses in gusts, drives mist, and
+// blows snow off the ridgelines. On a route the left band is the summit and the right band is the base.
+const REDUCED_MOTION = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; };
+const windWord = w => w < 4 ? 'calm' : w < 12 ? 'breezy' : w < 22 ? 'windy' : w < 35 ? 'very windy' : 'storm force';
+function makeScene(canvas, seed, mirror) {
+  const ctx = canvas.getContext('2d'), rnd = mulberry32(seed);
+  let W = 0, H = 0, flakes = [], spin = [], layers = [], peaks = [], mist = [], dark = false, raf = 0, last = 0, t0 = 0;
+  let st = { depth: 0, wind: 0, gust: 0, label: '' };
+  const snowing = () => st.depth > 0.05;
+  const inten = () => snowing() ? Math.min(1, Math.max(0.12, Math.sqrt(st.depth / 30))) : 0;
+  const targetCount = () => snowing() ? Math.max(10, Math.round(W * H / 2600 * (0.2 + 1.5 * inten()))) : 0;
+  const gustAmp = () => Math.min(0.9, Math.max(0.1, (st.gust - st.wind) / Math.max(8, st.wind * 2)));
+  const windNow = t => Math.max(0, st.wind * (1 + gustAmp() * (Math.sin(t * 0.8) + 0.6 * Math.sin(t * 2.3 + 1.7)) / 1.6));
+  const readTheme = () => { const m = /#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(getComputedStyle(document.documentElement).getPropertyValue('--page')); dark = m ? (parseInt(m[1], 16) * .299 + parseInt(m[2], 16) * .587 + parseInt(m[3], 16) * .114) < 128 : false; };
+  function ridge(base, amp, rough) {              // value-noise ridgeline sampled every 8 px
+    const n = Math.ceil(W / 8) + 2, oct = [[0.012, 1], [0.03, .5], [0.075, .22]].map(([f, a]) => ({ f, a, ph: rnd() * 1000 }));
+    const pts = [];
+    for (let i = 0; i < n; i++) {
+      const x = i * 8; let v = 0;
+      for (const o of oct) v += o.a * Math.abs(Math.sin(x * o.f * 6.28 + o.ph * (1 + rough * Math.sin(x * o.f * 3.1 + o.ph))));
+      pts.push([x, base - amp * Math.pow(v / 1.72, 1.15)]);
+    }
+    return pts;
+  }
+  const newFlake = anywhere => ({ x: rnd() * W, y: anywhere ? rnd() * H : -6, r: 0.8 + rnd() * 2.2, vy: 18 + rnd() * 34, ph: rnd() * 6.28, sw: 4 + rnd() * 10, drag: 0.6 + rnd() * 0.6 });
+  function build() {
+    layers = [ridge(H * 0.80, H * 0.30, 0.6), ridge(H * 0.88, H * 0.26, 0.9), ridge(H * 0.97, H * 0.20, 1.2)];
+    if (mirror) layers = layers.map(l => l.map(([x, y]) => [W - x, y]).reverse());
+    peaks = [];                                   // local summits of the two back ridges: where blown snow comes off
+    for (const l of layers.slice(0, 2)) for (let i = 1; i < l.length - 1; i++) if (l[i][1] < l[i - 1][1] && l[i][1] <= l[i + 1][1] && l[i][1] < H * 0.74) peaks.push(l[i]);
+    mist = Array.from({ length: 4 }, () => ({ x: rnd() * W, y: H * (0.5 + rnd() * 0.35), rx: 60 + rnd() * 90, ry: 16 + rnd() * 20, k: 0.15 + rnd() * 0.3 }));
+    flakes = []; spin = [];
+    while (flakes.length < targetCount()) flakes.push(newFlake(true));
+  }
+  function layout() {
+    const w = Math.floor((innerWidth - 1040) / 2 - 8);
+    if (w < 100) { canvas.style.display = 'none'; cancelAnimationFrame(raf); raf = 0; return; }
+    canvas.style.display = 'block'; readTheme();
+    const dpr = devicePixelRatio || 1; W = w; H = innerHeight;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr); canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    build(); draw(0); start();
+  }
+  function fit(text, max) { while (text.length > 3 && ctx.measureText(text).width > max) text = text.slice(0, -2).replace(/\s+$/, '') + '…'; return text; }
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    const body = dark ? ['#1f2429', '#272d34', '#323942'] : ['#d9e2ec', '#c0cddc', '#a6b8cd'];
+    const capA = snowing() ? 0.25 + 0.75 * Math.min(1, Math.sqrt(st.depth / 20)) : 0;
+    const cap = `rgba(255,255,255,${(dark ? 0.55 : 0.96) * capA})`;
+    layers.forEach((pts, li) => {
+      const top = Math.min(...pts.map(p => p[1]));
+      const g = ctx.createLinearGradient(0, top, 0, top + H * 0.14);
+      g.addColorStop(0, cap); g.addColorStop(1, body[li]);
+      ctx.beginPath(); ctx.moveTo(pts[0][0], H);
+      for (const [x, y] of pts) ctx.lineTo(x, y);
+      ctx.lineTo(pts[pts.length - 1][0], H); ctx.closePath();
+      ctx.fillStyle = g; ctx.fill();
+    });
+    ctx.fillStyle = dark ? 'rgba(255,255,255,.07)' : 'rgba(150,170,195,.20)';      // mist, drifting with the wind
+    for (const m of mist) { ctx.beginPath(); ctx.ellipse(m.x, m.y, m.rx, m.ry, 0, 0, 6.2832); ctx.fill(); }
+    const w = windNow(t), streak = w > 8;
+    ctx.fillStyle = ctx.strokeStyle = dark ? 'rgba(255,255,255,.85)' : 'rgba(70,120,190,.6)';
+    for (const f of flakes) {
+      const x = f.x + Math.sin(t * 0.9 + f.ph) * f.sw * 0.4;
+      if (streak) { ctx.lineWidth = f.r * 0.9; ctx.beginPath(); ctx.moveTo(x, f.y); ctx.lineTo(x - w * f.drag * 3 * 0.06, f.y - f.vy * 0.06); ctx.stroke(); }
+      else { ctx.beginPath(); ctx.arc(x, f.y, f.r, 0, 6.2832); ctx.fill(); }
+    }
+    for (const p of spin) {                                                         // snow blown off the ridgelines
+      ctx.globalAlpha = Math.max(0, p.life / p.max) * 0.8; ctx.lineWidth = p.r;
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.vx * 0.07, p.y - p.vy * 0.07); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    ctx.font = '600 11px system-ui, -apple-system, sans-serif'; ctx.textAlign = mirror ? 'right' : 'left';
+    ctx.fillStyle = dark ? 'rgba(255,255,255,.78)' : 'rgba(30,50,80,.78)';
+    const x = mirror ? W - 10 : 10, lines = [fit(st.label, W - 24), `${(Math.round(st.depth * 10) / 10).toFixed(1)} in snow`,
+      `${windWord(st.wind)}, ${Math.round(st.wind)} mph` + (st.gust - st.wind >= 3 ? `, gusts ${Math.round(st.gust)}` : '')];
+    lines.forEach((l, i) => { ctx.font = (i === 0 ? '600 ' : '400 ') + '11px system-ui, -apple-system, sans-serif'; ctx.fillText(l, x, 22 + i * 14); });
+  }
+  function frame(now) {
+    raf = requestAnimationFrame(frame);
+    if (document.hidden) { last = now; return; }
+    const dt = Math.min(0.05, (now - (last || now)) / 1000); last = now; t0 += dt;
+    const w = windNow(t0), px = w * 3, want = targetCount();
+    while (flakes.length < want) flakes.push(newFlake(false));
+    if (flakes.length > want + 8) flakes.length = want;
+    for (const f of flakes) {
+      f.y += f.vy * (0.7 + inten() * 0.8) * dt; f.x += (px * f.drag + Math.sin(t0 + f.ph) * f.sw) * dt;
+      if (f.y > H + 6) Object.assign(f, newFlake(false)); if (f.x > W + 6) f.x = -6; else if (f.x < -6) f.x = W + 6;
+    }
+    for (const m of mist) { m.x += px * m.k * 0.5 * dt + 4 * dt; if (m.x - m.rx > W) m.x = -m.rx; }
+    if (snowing() && w >= 10 && peaks.length && spin.length < 70 && rnd() < dt * (w - 8) * 1.2) {
+      const pk = peaks[Math.floor(rnd() * peaks.length)];
+      spin.push({ x: pk[0], y: pk[1], vx: w * 5 * (0.7 + rnd() * 0.6), vy: 6 - rnd() * 14, r: 1 + rnd() * 1.4, life: 1.1 + rnd(), max: 2.1 });
+    }
+    for (const p of spin) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 8 * dt; p.life -= dt; }
+    spin = spin.filter(p => p.life > 0 && p.x < W + 20);
+    draw(t0);
+  }
+  function start() { if (!raf && !REDUCED_MOTION && canvas.style.display !== 'none') raf = requestAnimationFrame(frame); }
+  return { layout, set(info) { st = Object.assign({ depth: 0, wind: 0, gust: 0, label: '' }, info); if (W) { while (flakes.length < targetCount()) flakes.push(newFlake(true)); if (flakes.length > targetCount()) flakes.length = targetCount(); if (!snowing()) spin = []; if (REDUCED_MOTION) draw(0); } } };
+}
+const scenes = [makeScene(document.getElementById('snow-left'), 7, false), makeScene(document.getElementById('snow-right'), 19, true)];
+function windInfo(sp) {                            // latest wind: last few hours if we have them, else the latest day
+  const hr = (sp.hourly || []).filter(d => d.gust != null || d.wind != null).slice(-3);
+  if (hr.length) {
+    const w = hr.reduce((a, d) => a + (d.wind != null ? d.wind : (d.gust || 0)), 0) / hr.length;
+    return { wind: w, gust: Math.max(w, ...hr.map(d => d.gust != null ? d.gust : (d.wind || 0))) };
+  }
+  const d = sp.days[sp.days.length - 1];
+  return { wind: d.wavg || 0, gust: d.wpk || d.wavg || 0 };
+}
+const sceneInfo = (sp, label) => Object.assign({ depth: sp.summary.now || 0, label }, windInfo(sp));
+function updateScenes(a, b, la, lb) { scenes[0].set(sceneInfo(a, la)); scenes[1].set(sceneInfo(b, lb)); }
+
+/* ------------------------------------------------------------- tabs ---- */
+const MODES = {
+  places: { items: () => REPORT.locations, label: l => l.label, meters: l => [snowMeter(null, l)], key: l => l.name, render: renderPanel, field: 'loc', noun: 'Places' },
+  routes: { items: () => REPORT.routes, group: r => r.group, label: r => r.name, meters: r => [snowMeter('Summit', REPORT.spots[r.top]), snowMeter('Base', REPORT.spots[r.base])], key: r => 'route:' + r.id, render: renderRoute, field: 'route', noun: 'Routes' }
+};
+const store = { places: [], routes: [] }, activeIdx = { places: 0, routes: 0 };
+let mode = 'places';
+
+function setMode(m, idx) {
+  mode = m; panels = store[m];
+  const spec = MODES[m], items = spec.items();
+  const tabs = document.getElementById('tabs'), host = document.getElementById('panels');
+  tabs.replaceChildren(); host.replaceChildren(); panels.length = 0;
+  tabs.setAttribute('aria-label', spec.noun);
+  let lastGroup = null;
+  items.forEach((it, i) => {
+    if (spec.group && spec.group(it) !== lastGroup) { lastGroup = spec.group(it); tabs.append(h('div', { class: 'tabgroup', text: lastGroup })); }
+    const ms = spec.meters(it);
+    const tab = h('button', { role: 'tab', id: 'tab-' + i, 'aria-controls': 'panel-' + i, 'aria-selected': 'false', tabindex: '-1',
+      'aria-label': spec.label(it) + '. ' + ms.map(m => m.getAttribute('title')).join('. ') }, [h('span', { class: 't-name', text: spec.label(it) }), h('span', { class: 't-meters' }, ms)]);
+    const root = h('section', { class: 'panel', role: 'tabpanel', id: 'panel-' + i, 'aria-labelledby': 'tab-' + i });
+    root.hidden = true;
+    tabs.append(tab); host.append(root);
+    panels.push({ [spec.field]: it, root, rendered: false, charts: [] });
+    tab.addEventListener('click', () => select(i));
+    tab.addEventListener('keydown', e => {
+      const n = items.length; let j = null;
+      if (e.key === 'ArrowRight') j = (i + 1) % n; else if (e.key === 'ArrowLeft') j = (i + n - 1) % n; else if (e.key === 'Home') j = 0; else if (e.key === 'End') j = n - 1;
+      if (j != null) { e.preventDefault(); select(j); document.getElementById('tab-' + j).focus(); }
+    });
+  });
+  drawModebar();
+  select(Math.min(idx != null ? idx : activeIdx[m], items.length - 1));
+}
+function drawModebar() {
+  const bar = document.getElementById('modebar'); bar.replaceChildren();
+  const opts = Object.entries(MODES).filter(([, sp]) => sp.items().length).map(([k, sp]) => [k, `${sp.noun} (${sp.items().length})`]);
+  if (opts.length < 2) return;
+  bar.append(h('div', { class: 'seg' }, opts.map(([k, t]) => { const b = h('button', { type: 'button', 'aria-pressed': String(k === mode), text: t }); b.addEventListener('click', () => { if (k !== mode) setMode(k); }); return b; })));
+}
+function select(i) {
+  activeIdx[mode] = i; state.active = i;
+  const spec = MODES[mode];
+  panels.forEach((p, j) => {
+    p.root.hidden = j !== i;
+    const tab = document.getElementById('tab-' + j);
+    tab.setAttribute('aria-selected', String(j === i)); tab.tabIndex = j === i ? 0 : -1;
+  });
+  const p = panels[i];
+  if (!p.rendered) { spec.render(p); p.rendered = true; }
+  if (mode === 'routes') updateScenes(REPORT.spots[p.route.top], REPORT.spots[p.route.base], 'Summit', 'Base'); else updateScenes(p.loc, p.loc, p.loc.label, p.loc.label);
+  history.replaceState(null, '', '#' + encodeURIComponent(spec.key(p[spec.field])));
+}
+function init() {
+  document.getElementById('sub').textContent = `Generated ${REPORT.generated}. Data: NOAA NWS observations and NCEI GHCN-Daily.`;
+  REPORT.routes = REPORT.routes || []; REPORT.spots = REPORT.spots || {};
+  const want = decodeURIComponent(location.hash.slice(1));
+  let m = REPORT.routes.length ? 'routes' : 'places', idx = null;
+  if (want.startsWith('route:')) { const k = REPORT.routes.findIndex(r => 'route:' + r.id === want); if (k >= 0) { m = 'routes'; idx = k; } }
+  else if (want) { const k = REPORT.locations.findIndex(l => l.name === want); if (k >= 0) { m = 'places'; idx = k; } }
+  if (!MODES[m].items().length) m = m === 'routes' ? 'places' : 'routes';
+  setMode(m, idx);
+  scenes.forEach(sc => sc.layout());
+  let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { const p = panels[state.active]; if (p) p.charts.forEach(c => c.draw()); scenes.forEach(sc => sc.layout()); }, 120); });
+}
+init();
+</script>
+</body>
+</html>

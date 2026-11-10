@@ -1,0 +1,8 @@
+# generated or secret: never commit
+.sheet.env
+data/
+cache/
+logs/
+report.html
+__pycache__/
+*.pyc

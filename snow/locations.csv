@@ -1,0 +1,53 @@
+name,lat,lon,note,elev_m,route,role
+san_gorgonio,34.0990,-116.8247,Mount San Gorgonio summit (11503 ft),,,
+big_bear_lake,34.2439,-116.9114,Big Bear Lake village,,,
+mammoth_mountain,37.6311,-119.0326,Mammoth Mountain summit (11053 ft),,,
+mount_whitney,36.5786,-118.2920,Mount Whitney summit (14505 ft),,,
+brian_head,37.6967,-112.8500,Brian Head town (resort is a mile or so SE),,,
+san_jacinto,33.8147,-116.6797,San Jacinto Peak summit (10834 ft),,,
+taos,36.5959,-105.4543,Taos Ski Valley,,,
+vail_pass,39.5319,-106.2161,Vail Pass summit on I-70 (10662 ft),,,
+anchorage,61.2181,-149.9003,Anchorage AK (city),,,
+alyeska,60.9697,-149.0990,Alyeska Resort / Girdwood AK,,,
+stevens_pass,47.7448,-121.0890,Stevens Pass summit WA (4061 ft),,,
+mount_st_helens,46.1912,-122.1944,Mount St. Helens summit WA (8363 ft),,,
+afternoon_backcountry_ski_base,37.7495,-119.0753,"June Lake – afternoon tour (Feb 23, 2025) base, 9,127 ft",2782,afternoon_backcountry_ski,base
+afternoon_backcountry_ski_top,37.7399,-119.0733,"June Lake – afternoon tour (Feb 23, 2025) summit, 10,121 ft",3085,afternoon_backcountry_ski,top
+alta_diablo_san_gorgonio_wilderness_base,34.1617,-116.8721,"San Gorgonio – Alto Diablo tour from the parking lot (Apr 7, 2024) base, 6,867 ft",2093,alta_diablo_san_gorgonio_wilderness,base
+alta_diablo_san_gorgonio_wilderness_top,34.1333,-116.8677,"San Gorgonio – Alto Diablo tour from the parking lot (Apr 7, 2024) summit, 10,210 ft",3112,alta_diablo_san_gorgonio_wilderness,top
+backcountry_ski_base,43.5007,-111.0055,"Teton Pass WY – camp tour (Jan 10, 2026) base, 7,799 ft",2377,backcountry_ski,base
+backcountry_ski_top,43.5012,-111.0204,"Teton Pass WY – camp tour (Jan 10, 2026) summit, 8,898 ft",2712,backcountry_ski,top
+cuyamaca_peak_ski_tour_san_diego_county_base,32.9593,-116.5792,"Cuyamaca – Peak from Paso Picacho (Mar 2, 2023) base, 4,869 ft",1484,cuyamaca_peak_ski_tour_san_diego_county,base
+cuyamaca_peak_ski_tour_san_diego_county_top,32.9471,-116.6066,"Cuyamaca – Peak from Paso Picacho (Mar 2, 2023) summit, 6,460 ft",1969,cuyamaca_peak_ski_tour_san_diego_county,top
+lone_pine_aattempt_base,36.5971,-118.2014,"Lone Pine – Lone Pine Creek attempt from Fire Road parking (Mar 15, 2026) base, 6,411 ft",1954,lone_pine_aattempt,base
+lone_pine_aattempt_top,36.5703,-118.2180,"Lone Pine – Lone Pine Creek attempt from Fire Road parking (Mar 15, 2026) summit, 9,646 ft",2940,lone_pine_aattempt,top
+night_touur_day_1_top,43.5033,-111.0037,"Teton Pass WY – camp night tour, day 1 (Jan 9, 2026) summit, 8,271 ft",2521,night_touur_day_1,top
+aiare_tele_bowl_day_3_base,37.6287,-118.9628,"Mammoth – Tele Bowl (AIARE course day 3) base, 7,851 ft",2393,aiare_tele_bowl_day_3,base
+aiare_tele_bowl_day_3_top,37.6126,-118.9604,"Mammoth – Tele Bowl (AIARE course day 3) summit, 8,809 ft",2685,aiare_tele_bowl_day_3,top
+blacktail_butte_base,43.6339,-110.7170,"Grand Teton NP WY – Blacktail Butte (Oct 23, 2018) base, 6,503 ft",1982,blacktail_butte,base
+blacktail_butte_top,43.6351,-110.6923,"Grand Teton NP WY – Blacktail Butte (Oct 23, 2018) summit, 7,657 ft",2334,blacktail_butte,top
+bloody_couloir_base,37.6146,-118.9110,"Mammoth – Bloody Couloir, car to couloir base base, 7,831 ft",2387,bloody_couloir,base
+bloody_couloir_top,37.5661,-118.9108,"Mammoth – Bloody Couloir, car to couloir base summit, 10,863 ft",3311,bloody_couloir,top
+final_jhole_base,43.5106,-110.9861,"Teton Pass WY – Knobs & Lone Pine from Lone Pine parking (final plan) base, 7,257 ft",2212,final_jhole,base
+final_jhole_top,43.4905,-111.0261,"Teton Pass WY – Knobs & Lone Pine from Lone Pine parking (final plan) summit, 9,131 ft",2783,final_jhole,top
+june_lake_southern_end_base,37.7628,-119.1134,"June Lake – Fern Creek TH, southern end (plan) base, 7,297 ft",2224,june_lake_southern_end,base
+june_lake_southern_end_top,37.7249,-119.0997,"June Lake – Fern Creek TH, southern end (plan) summit, 11,201 ft",3414,june_lake_southern_end,top
+justin_s_route_base,40.4750,-121.5057,"Lassen – Peak via Justin's Route base, 8,468 ft",2581,justin_s_route,base
+justin_s_route_top,40.4882,-121.5050,"Lassen – Peak via Justin's Route summit, 10,449 ft",3185,justin_s_route,top
+lake_mary_red_pine_base,37.6213,-118.9922,"Mammoth – Lake Mary, Red Cone & TJ Bowl from Tamarack base, 8,317 ft",2535,lake_mary_red_pine,base
+lake_mary_red_pine_top,37.5963,-119.0240,"Mammoth – Lake Mary, Red Cone & TJ Bowl from Tamarack summit, 10,295 ft",3138,lake_mary_red_pine,top
+lone_pine_base,36.5976,-118.1864,"Lone Pine – Whitney Portal, Meysan Lakes, Thor, Irvine & Whitney (plan) base, 5,892 ft",1796,lone_pine,base
+lone_pine_top,36.5786,-118.2922,"Lone Pine – Whitney Portal, Meysan Lakes, Thor, Irvine & Whitney (plan) summit, 14,495 ft",4418,lone_pine,top
+mayflower_gulch_acclimation_base,39.4140,-106.1478,"Fremont Pass CO – Mayflower Gulch acclimation laps base, 11,516 ft",3510,mayflower_gulch_acclimation,base
+mayflower_gulch_acclimation_top,39.4233,-106.1229,"Fremont Pass CO – Mayflower Gulch acclimation laps summit, 13,950 ft",4252,mayflower_gulch_acclimation,top
+mount_langley_via_tuttle_creek_base,36.5540,-118.1842,"Lone Pine – Mt Langley from Tuttle Creek TH (Jul 2016) base, 6,952 ft",2119,mount_langley_via_tuttle_creek,base
+mount_langley_via_tuttle_creek_top,36.5234,-118.2395,"Lone Pine – Mt Langley from Tuttle Creek TH (Jul 2016) summit, 14,029 ft",4276,mount_langley_via_tuttle_creek,top
+mt_shasta_base,41.3534,-122.2339,"Mt Shasta – Avalanche Gulch & Hotlum-Bolam (Bunny Flat / North Gate) base, 6,906 ft",2105,mt_shasta,base
+mt_shasta_top,41.4090,-122.1949,"Mt Shasta – Avalanche Gulch & Hotlum-Bolam (Bunny Flat / North Gate) summit, 14,154 ft",4314,mt_shasta,top
+onion_valley_low_exposure_base,36.7764,-118.3300,"Onion Valley – low-exposure afternoon tour base, 8,927 ft",2721,onion_valley_low_exposure,base
+onion_valley_low_exposure_top,36.7707,-118.3505,"Onion Valley – low-exposure afternoon tour summit, 10,108 ft",3081,onion_valley_low_exposure,top
+big_bear_lake_morning_tour_base,34.2289,-116.8617,"Big Bear Lake – Castle Rock morning tour (Feb 20, 2026) base, 7,113 ft",2168,big_bear_lake_morning_tour,base
+big_bear_lake_morning_tour_top,34.2115,-116.8744,"Big Bear Lake – Castle Rock morning tour (Feb 20, 2026) summit, 8,143 ft",2482,big_bear_lake_morning_tour,top
+horseshoe_meadow_introduction_base,36.4466,-118.1786,"Horseshoe Meadow – intro routes & PCT laps base, 9,895 ft",3016,horseshoe_meadow_introduction,base
+horseshoe_meadow_introduction_top,36.4273,-118.1907,"Horseshoe Meadow – intro routes & PCT laps summit, 11,601 ft",3536,horseshoe_meadow_introduction,top
+sang_sunday_feb_15_top,34.0993,-116.8249,"San Gorgonio – summit via Alto Diablo & Red Rock Flat camp (Feb 15 plan) summit, 11,486 ft",3501,sang_sunday_feb_15,top

@@ -130,7 +130,6 @@
   }
   .ticket-form input::placeholder { color: var(--dim); }
   .ticket-form input:focus { box-shadow: 0 0 8px var(--green); }
-  .ticket-form .trap { position: absolute; left: -5000px; }
   .ticket-msg { grid-column: 1 / -1; min-height: 0; color: var(--green); }
   .ticket-msg.error { color: #ff5555; }
 
@@ -207,16 +206,36 @@
   }
   button:hover { background: var(--bg); color: var(--green); outline: 1px solid var(--green); }
 
-  .formkit-fields { display: flex; flex-wrap: wrap; gap: 0.75rem; width: 100%; }
-  .formkit-alert { list-style: none; margin-bottom: 1rem; }
-  .formkit-alert:empty { display: none; }
-  .formkit-alert-error { color: #ff5555; }
-  .formkit-alert-success { color: var(--green); }
+  .signup-fields { display: flex; flex-wrap: wrap; gap: 0.75rem; width: 100%; }
+  .signup-fields input[type="email"] { flex: 1 1 240px; }
+  .signup-msg { margin-top: 0.75rem; min-height: 1.5em; }
+  .signup-msg.error { color: #ff5555; }
+  .trap { position: absolute; left: -5000px; }
+  .ticket-form .join { flex-basis: 100%; display: flex; align-items: center; gap: 0.5rem; color: var(--dim); cursor: pointer; }
+  .ticket-form .join input { appearance: none; -webkit-appearance: none; width: 1rem; height: 1rem; margin: 0;
+                              border: 1px solid var(--green); background: var(--bg); cursor: pointer; display: grid; place-content: center; }
+  .ticket-form .join input:checked { background: var(--green); }
+  .ticket-form .join input:checked::after { content: "✓"; color: var(--bg); font-size: 0.8rem; line-height: 1; }
 
   footer {
     text-align: center;
     color: var(--dim);
     padding: 3rem 1rem;
+  }
+  /* snowflake in the footer: links to the snow report */
+  footer .flake {
+    display: inline-block;
+    margin-left: .7rem;
+    color: var(--green);
+    opacity: 1;
+    text-decoration: none;
+    font-size: 1.1rem;
+    text-shadow: 0 0 6px var(--green);
+    transition: transform .8s, text-shadow .3s;
+  }
+  footer .flake:hover, footer .flake:focus-visible {
+    text-shadow: 0 0 12px var(--green), 0 0 22px var(--green);
+    transform: rotate(120deg);
   }
   /* ---------- laser intro ---------- */
   #lasers {
@@ -254,6 +273,7 @@
     <!-- EDIT: one <li> per event. Copy/paste to add more.
          data-event = a unique id for the ticket list (keep it the same once people start signing up)
          data-date  = the show date; ticket signups close automatically after this day
+         data-time  = the show time, included in the confirmation email (leave "" if not set yet)
          add data-tickets="off" to an event that doesn't need tickets -->
     <ul class="events">
       <li data-event="2026-11-01-hyperfried-halloween" data-date="2026-11-01">
@@ -264,35 +284,35 @@
         <span class="date">NOV 05 THU</span>
         <span><span class="title">(Secret) Movie Night</span></span>
       </li>
-      <li data-event="2026-11-12-vinyl-jam" data-date="2026-11-12">
+      <li data-event="2026-11-12-vinyl-jam" data-date="2026-11-12" data-time="6:30–9:30 PM">
         <span class="date">NOV 12 THU</span>
-        <span><span class="title">Vinyl Jam</span></span>
+        <span><span class="title">Vinyl Jam</span>
+          <span class="info">6:30–9:30 PM</span></span>
       </li>
-      <li data-event="2026-11-17-improv-jam" data-date="2026-11-17">
+      <li data-event="2026-11-17-improv-jam" data-date="2026-11-17" data-time="6:30–9:30 PM">
         <span class="date">NOV 17 TUE</span>
-        <span><span class="title">Open Improv Jam</span></span>
+        <span><span class="title">Open Improv Jam</span>
+          <span class="info">6:30–9:30 PM</span></span>
       </li>
-      <li data-event="2026-11-20-jest-friends" data-date="2026-11-21">
+      <li data-event="2026-11-20-jest-friends" data-date="2026-11-21" data-time="">
         <span class="date">NOV 21 SAT</span>
-        <span><span class="title">Jest Friends</span></span>
+        <span><span class="title">Jest Friends</span>
+          <span class="info">time TBA</span></span>
       </li>
     </ul>
   </section>
 
-  <!-- ===== MAILING LIST (Kit) ===== -->
+  <!-- ===== MAILING LIST (saved to the Google Sheet's "Mailing List" tab) ===== -->
   <section id="mailing-list">
     <h2>Join the Mailing List</h2>
-
-    <!-- Kit form 10115509. Kit's script (loaded at the bottom) handles the signup. -->
-    <form id="signup" action="https://app.kit.com/forms/10115509/subscriptions" class="seva-form formkit-form" method="post"
-          data-sv-form="10115509" data-uid="df2d93803e" data-format="inline" data-version="5"
-          data-options='{"settings":{"after_subscribe":{"action":"message","success_message":"thanks! check your email to confirm.","redirect_url":""},"powered_by":{"show":false},"recaptcha":{"enabled":false}},"version":"5"}'>
-      <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul>
-      <div data-element="fields" class="seva-fields formkit-fields">
-        <input class="formkit-input" type="email" name="email_address" aria-label="Email" placeholder="your email" required>
-        <button data-element="submit" class="formkit-submit"><span>Sign Up</span></button>
+    <form id="signup">
+      <div class="signup-fields">
+        <input type="email" name="email" aria-label="Email" placeholder="your email" required maxlength="200" autocomplete="email">
+        <span class="trap" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></span>
+        <button type="submit">Sign Up</button>
       </div>
     </form>
+    <p class="signup-msg" id="signup-msg"></p>
   </section>
 
   <!-- ===== DISCORD ===== -->
@@ -318,7 +338,7 @@
   </section>
 
   <footer>
-    &copy; <span id="year"></span> HYPERFRIED
+    &copy; <span id="year"></span> HYPERFRIED<a class="flake" href="snow/index.html" title="snow report" aria-label="Snow report">&#10052;&#xFE0E;</a>
   </footer>
 
 <script>
@@ -457,7 +477,7 @@
   // ---------- tickets ----------
   // EDIT: paste the Google Apps Script web app URL here (see hyperfried-tickets/SETUP.md).
   // While it's empty the form runs in demo mode and only saves in this browser.
-  const TICKETS_URL = "https://script.google.com/macros/s/AKfycbyrABf17sy3SqEWz4k_e04fXhfgn4jqbXt47Uzy_IHWPZlwTTBl5KXfZ_QfKVqKey1Ogw/exec";
+  const TICKETS_URL = "https://script.google.com/macros/s/AKfycbxBt8QiPwAPPYHjgowJ7TU7o2cJlTS6K7i5KXgJ_WfQ344RCScN-V6sBwk389G7VZdRag/exec";
 
   const ticketRows = [...document.querySelectorAll(".events li[data-event]")];
   const today = new Date().toISOString().slice(0, 10);
@@ -487,7 +507,8 @@
       <input type="text" name="name" placeholder="name" required maxlength="100" autocomplete="name">
       <input type="email" name="email" placeholder="email" required maxlength="200" autocomplete="email">
       <span class="trap" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></span>
-      <button type="submit">reserve</button>`;
+      <button type="submit">reserve</button>
+      <label class="join"><input type="checkbox" name="list" value="yes"> add me to the Hyperfried mailing list</label>`;
     const msg = document.createElement("div");
     msg.className = "ticket-msg";
     li.append(form, msg);
@@ -509,7 +530,8 @@
       e.preventDefault();
       msg.className = "ticket-msg";
       msg.textContent = "reserving...";
-      const data = new URLSearchParams({ event: id, eventName: title, name: form.elements["name"].value, email: form.elements["email"].value, website: form.elements["website"].value });
+      const dateText = li.querySelector(".date").textContent;
+      const data = new URLSearchParams({ event: id, eventName: title, eventDate: dateText, eventTime: li.dataset.time || "", list: form.elements["list"].checked ? "yes" : "", name: form.elements["name"].value, email: form.elements["email"].value, website: form.elements["website"].value });
       try {
         let res;
         if (TICKETS_URL) {
@@ -541,6 +563,29 @@
     li.refresh();
   });
 
+  // ---------- mailing list ----------
+  const signup = document.getElementById("signup");
+  const signupMsg = document.getElementById("signup-msg");
+  signup.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    signupMsg.className = "signup-msg";
+    signupMsg.textContent = "signing you up...";
+    const data = new URLSearchParams({ action: "subscribe", email: signup.elements["email"].value, website: signup.elements["website"].value });
+    try {
+      const res = TICKETS_URL ? await (await fetch(TICKETS_URL, { method: "POST", body: data })).json() : { ok: true };
+      if (res.ok) {
+        signupMsg.textContent = res.already ? "you're already on the list!" : "thanks! you're on the list." + (TICKETS_URL ? "" : " (demo mode)");
+        signup.reset();
+      } else {
+        signupMsg.className = "signup-msg error";
+        signupMsg.textContent = res.error || "something went wrong, please try again.";
+      }
+    } catch {
+      signupMsg.className = "signup-msg error";
+      signupMsg.textContent = "couldn't reach the mailing list. please try again.";
+    }
+  });
+
   // load the current counts
   (async () => {
     try {
@@ -555,6 +600,5 @@
     ticketRows.forEach((li) => li.refresh && li.refresh());
   })();
 </script>
-<script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
 </body>
 </html>
