@@ -193,6 +193,77 @@
   .evan-box .slogan { font-family: "Comic Sans MS", cursive; font-size: 13px; color: #000080; }
   .evan-box .enter { display: block; text-align: center; background: #000080; color: #ffff00; font: bold 14px "Courier New", monospace; padding: 4px; }
 
+  /* ---------- lighting by: busted old light board ---------- */
+  .console {
+    display: block;
+    position: relative;
+    width: 320px;
+    max-width: 100%;
+    background: #161616;
+    border: 3px solid #7a7a7a;
+    border-right-color: #4a4a4a;
+    border-bottom-color: #3a3a3a;
+    box-shadow: 6px 6px 0 #000, 6px 6px 0 2px #1e3a24;
+    padding: 14px 12px 12px;
+    color: #9a9a9a;
+    text-decoration: none;
+    text-shadow: none;
+    font-family: "Courier New", monospace;
+    transform: rotate(-0.7deg);
+  }
+  .console:hover { background: #161616; color: #9a9a9a; animation: shake 0.25s steps(2) infinite; }
+  @keyframes shake { 0% { transform: rotate(-0.7deg) translate(0, 0); } 50% { transform: rotate(-0.7deg) translate(-2px, 1px); } }
+  .console .tape {   /* black gaffer tape, torn ends, white paint-marker writing */
+    position: absolute; top: -12px; left: 16px;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px),
+      #0b0b0b;
+    color: #e9e9e4;
+    font: bold 12px "Courier New", monospace; letter-spacing: 0.1em;
+    padding: 3px 16px 3px 14px;
+    transform: rotate(-3deg);
+    clip-path: polygon(0 8%, 4% 0, 3% 30%, 6% 55%, 2% 78%, 5% 100%, 96% 100%, 99% 82%, 95% 60%, 100% 38%, 97% 14%, 100% 0, 3% 0);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    text-shadow: 0 0 1px rgba(255,255,255,0.4);
+  }
+  .console .top { display: flex; justify-content: space-between; align-items: center; font-size: 10px; letter-spacing: 0.2em; margin-top: 4px; }
+  .console .leds { display: flex; gap: 6px; }
+  .console .led { width: 8px; height: 8px; }
+  .console .led.r { background: #c22; }
+  .console .led.a { background: #c80; animation: flick 2.7s steps(1) infinite; }
+  .console .led.dead { background: #333; border: 1px solid #222; }
+  .console .led.g { background: #2b2; animation: flick 0.9s steps(1) infinite 0.3s; }
+  @keyframes flick { 0%, 62%, 70%, 100% { opacity: 1; } 64%, 68% { opacity: 0.1; } }
+  .console .screen { display: block; position: relative; margin: 10px 0 4px; border: 2px solid #000; outline: 1px solid #555; background: #020802; }
+  .console .scope { display: block; width: 100%; height: 100px; }
+  .console .screen::after {   /* scanlines + a crack */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(118deg, transparent 0 61%, rgba(200,200,200,0.25) 61.2%, transparent 61.6% 100%),
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.45) 0 1px, transparent 1px 3px);
+  }
+  .console .readout { display: flex; justify-content: space-between; font-size: 9px; letter-spacing: 0.1em; color: #6c8f70; }
+  .console .faders { display: flex; justify-content: space-between; height: 58px; margin: 12px 6px 0; }
+  .console .fader { position: relative; width: 2px; background: #000; border-left: 1px solid #444; }
+  .console .fader::after { content: ""; position: absolute; left: -8px; width: 18px; height: 8px; top: var(--y); background: #b8b8b0; border-bottom: 2px solid #555; transform: rotate(var(--r, 0deg)); }
+  .console .fader.gone::after { display: none; }
+  .console .join {
+    display: block; margin-top: 12px; padding: 7px 8px;
+    background: var(--green); color: #000;
+    font-weight: bold; letter-spacing: 0.25em; text-align: left;
+  }
+  .console:hover .join { background: #000; color: var(--green); outline: 1px dashed var(--green); }
+  /* lasers that fire out of the light board on hover */
+  #board-lasers { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 9; pointer-events: none; }
+
+  /* flashbang transition when joining the board */
+  #flashbang { position: fixed; inset: 0; z-index: 100; background: #fff; pointer-events: none; opacity: 0; }
+  #flashbang.go { animation: flashbang 0.9s ease-out forwards; }
+  @keyframes flashbang { 0% { opacity: 1; } 35% { opacity: 1; } 100% { opacity: 0.85; } }
+  body.blown > *:not(#flashbang) { filter: brightness(2.6) contrast(0.5) blur(3px); transition: filter 0.6s ease-out; }
+  .venue-note { color: var(--dim); font-size: 0.9rem; margin-top: 1.2rem; }
+
   /* ---------- mailing list ---------- */
   form { display: block; }
 
@@ -344,6 +415,27 @@
       </div>
       <span class="enter">&gt;&gt; ENTER SITE &lt;&lt;</span>
     </a>
+  </section>
+
+  <!-- ===== LIGHTING BY ===== -->
+  <section id="lighting">
+    <h2>Lighting by <span style="white-space: nowrap">Andy + Layla</span></h2>
+    <!-- the control panel runs on a computer at the venue, so the link only works on the venue's network -->
+    <a class="console" id="join-board" href="http://users-mac-mini.local:8090/">
+      <span class="tape">LIGHTS - A+L</span>
+      <span class="top"><span>CH 1-8 // DO NOT UNPLUG</span>
+        <span class="leds"><span class="led r"></span><span class="led a"></span><span class="led dead"></span><span class="led g"></span></span></span>
+      <span class="screen"><canvas class="scope" id="scope"></canvas></span>
+      <span class="readout"><span>CH1 2V/D_V</span><span>ERR 04</span><span>SYNC ??</span></span>
+      <span class="faders">
+        <span class="fader" style="--y: 8%"></span><span class="fader" style="--y: 61%; --r: 4deg"></span>
+        <span class="fader" style="--y: 33%"></span><span class="fader gone"></span>
+        <span class="fader" style="--y: 18%; --r: -6deg"></span><span class="fader" style="--y: 70%"></span>
+        <span class="fader" style="--y: 44%"></span><span class="fader" style="--y: 2%; --r: 3deg"></span>
+      </span>
+      <span class="join">&gt; JOIN THE BOARD_</span>
+    </a>
+    <p class="venue-note">only works when you're at the venue</p>
   </section>
 
   <footer>
@@ -584,6 +676,154 @@
     });
     li.refresh();
   });
+
+  // ---------- lighting board: busted oscilloscope ----------
+  (function () {
+    const cv = document.getElementById("scope");
+    if (!cv) return;
+    const ctx = cv.getContext("2d");
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let w, h, lost = 0;
+    function size() {
+      const dpr = window.devicePixelRatio || 1;
+      w = cv.clientWidth; h = cv.clientHeight;
+      cv.width = w * dpr; cv.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = "#020802"; ctx.fillRect(0, 0, w, h);
+    }
+    size();
+    window.addEventListener("resize", size);
+
+    function trace(t, color, dx, dy) {
+      ctx.beginPath();
+      for (let x = 0; x <= w; x += 3) {
+        const u = x / w * Math.PI * 2;
+        let y = h / 2 + dy - h * 0.28 * (Math.sin(u * 2.3 + t * 0.002) + 0.35 * Math.sin(u * 9 - t * 0.005));
+        y += (Math.random() - 0.5) * 3;                                  // jitter
+        if (Math.random() < 0.01) y += (Math.random() - 0.5) * h * 0.8;   // spikes
+        x ? ctx.lineTo(x + dx, y) : ctx.moveTo(x + dx, y);
+      }
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+    }
+
+    function frame(t) {
+      // phosphor smear: fade the last frame instead of clearing it
+      ctx.fillStyle = "rgba(2,8,2,0.35)";
+      ctx.fillRect(0, 0, w, h);
+
+      // crooked, uneven grid
+      ctx.strokeStyle = "rgba(60,140,70,0.18)";
+      ctx.lineWidth = 1;
+      for (let i = 1; i < 8; i++) { ctx.beginPath(); ctx.moveTo(i * w / 8 + (i % 3), 0); ctx.lineTo(i * w / 8, h); ctx.stroke(); }
+      for (let i = 1; i < 4; i++) { ctx.beginPath(); ctx.moveTo(0, i * h / 4); ctx.lineTo(w, i * h / 4 + 1); ctx.stroke(); }
+
+      if (lost > 0) {                       // signal dropped out
+        lost--;
+        if (lost % 6 < 4) { ctx.fillStyle = "#4f4"; ctx.font = "bold 12px Courier New, monospace"; ctx.fillText("SIG LOST", 8, 16); }
+      } else {
+        trace(t, "rgba(255,60,60,0.35)", 2, 1);   // misaligned colour ghost
+        trace(t, "#5f5", 0, 0);
+        if (Math.random() < 0.004) lost = 40 + Math.random() * 60;
+      }
+
+      // static
+      for (let i = 0; i < 40; i++) {
+        ctx.fillStyle = Math.random() < 0.5 ? "rgba(120,255,140,0.5)" : "rgba(0,0,0,0.8)";
+        ctx.fillRect(Math.random() * w, Math.random() * h, 1 + Math.random() * 2, 1);
+      }
+
+      // horizontal tearing: shift a random band sideways
+      if (Math.random() < 0.08) {
+        const dpr = cv.width / w, y = Math.random() * h, bh = 3 + Math.random() * 14, off = (Math.random() - 0.5) * 30;
+        ctx.drawImage(cv, 0, y * dpr, cv.width, bh * dpr, off, y, w, bh);
+      }
+
+      // rolling bar
+      const ry = (t * 0.03) % (h + 30) - 30;
+      ctx.fillStyle = "rgba(120,255,140,0.04)";
+      ctx.fillRect(0, ry, w, 18);
+
+      if (!still) requestAnimationFrame(frame);
+    }
+    frame(performance.now());
+  })();
+
+  // ---------- lasers out of the light board on hover ----------
+  (function () {
+    const board = document.getElementById("join-board");
+    if (!board || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const cv = document.createElement("canvas");
+    cv.id = "board-lasers";
+    document.body.appendChild(cv);
+    const ctx = cv.getContext("2d");
+    const colors = ["51,255,102", "255,60,60", "255,176,32"];
+    let level = 0, target = 0, running = false, w, h;
+    function size() {
+      const dpr = window.devicePixelRatio || 1;
+      w = window.innerWidth; h = window.innerHeight;
+      cv.width = w * dpr; cv.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    size();
+    window.addEventListener("resize", size);
+
+    function frame(now) {
+      level += (target - level) * 0.15;                 // quick fade in / out
+      ctx.globalCompositeOperation = "destination-out"; // leave short light trails
+      ctx.fillStyle = "rgba(0,0,0,0.3)";
+      ctx.fillRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "lighter";
+      const r = board.getBoundingClientRect();
+      const t = now / 1000, len = Math.hypot(w, h);
+      [0.15, 0.5, 0.85].forEach((pos, pi) => {          // three emitters along the top of the board
+        const ox = r.left + r.width * pos, oy = r.top + 6;
+        for (let i = 0; i < 5; i++) {
+          const spread = (i / 4 - 0.5) * 1.5;
+          const sweep = Math.sin(t * (1.6 + pi * 0.4) + i * 0.6 + pi * 2) * 0.55;
+          const angle = -Math.PI / 2 + spread + sweep;
+          const a = level * (0.7 + Math.random() * 0.3);
+          const c = colors[(i + pi) % colors.length];
+          ctx.beginPath();
+          ctx.moveTo(ox, oy);
+          ctx.lineTo(ox + Math.cos(angle) * len, oy + Math.sin(angle) * len);
+          ctx.strokeStyle = `rgba(${c},${0.22 * a})`; ctx.lineWidth = 6; ctx.stroke();
+          ctx.strokeStyle = `rgba(230,255,235,${0.7 * a})`; ctx.lineWidth = 1.1; ctx.stroke();
+        }
+      });
+      if (level > 0.01 || target > 0) requestAnimationFrame(frame);
+      else { running = false; ctx.clearRect(0, 0, w, h); }
+    }
+    function start() { target = 1; if (!running) { running = true; requestAnimationFrame(frame); } }
+    board.addEventListener("mouseenter", start);
+    board.addEventListener("mouseleave", () => { target = 0; });
+    board.addEventListener("focus", start);
+    board.addEventListener("blur", () => { target = 0; });
+  })();
+
+  // ---------- flashbang into the light board ----------
+  (function () {
+    const link = document.getElementById("join-board");
+    if (!link) return;
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    link.addEventListener("click", (e) => {
+      // let ctrl/cmd/shift/middle-clicks open a new tab as normal
+      if (calm || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      let flash = document.getElementById("flashbang");
+      if (!flash) { flash = document.createElement("div"); flash.id = "flashbang"; document.body.appendChild(flash); }
+      flash.classList.remove("go"); void flash.offsetWidth; flash.classList.add("go");
+      document.body.classList.add("blown");
+      setTimeout(() => { location.href = link.href; }, 650);
+    });
+    // coming back with the back button: clear the effect
+    window.addEventListener("pageshow", () => {
+      document.body.classList.remove("blown");
+      const flash = document.getElementById("flashbang");
+      if (flash) flash.remove();
+    });
+  })();
 
   // ---------- mailing list ----------
   const signup = document.getElementById("signup");
