@@ -114,6 +114,21 @@
   .events .info { color: var(--dim); display: block; }
   .events .tickets { white-space: nowrap; text-align: right; }
   .events .date .time { display: none; }
+  .events li.none { display: block; color: var(--dim); }
+
+  /* kind tag next to an event's name (e.g. "★ Artist Showcase"); title and tag share a line, the time sits under them */
+  .events .what { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem 0.7rem; }
+  .events .what .title { order: 1; }
+  .events .what .info { order: 3; flex-basis: 100%; }
+  .kind-tag { order: 2; font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim);
+              border: 1px solid var(--dim); padding: 0 0.5rem; text-decoration: none; white-space: nowrap; }
+  .events .what .host { order: 2; color: var(--dim); font-size: 0.9rem; white-space: nowrap; }   /* "hosted by ..." */
+
+  /* previous events: same rows, a little quieter, with room for photos and video under each one */
+  .events.past li { opacity: 0.85; }
+  .events.past .tickets, .events.past .ticket-form { display: none; }
+  .events .media { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5rem; padding-top: 0.4rem; }
+  .events .media img, .events .media video { width: 100%; display: block; border: 1px solid var(--dim); }
 
   @media (max-width: 600px) {
     .events li { grid-template-columns: 1fr; gap: 0.3rem; padding: 1rem 0; }
@@ -264,6 +279,57 @@
   body.blown > *:not(#flashbang) { filter: brightness(2.6) contrast(0.5) blur(3px); transition: filter 0.6s ease-out; }
   .venue-note { color: var(--dim); font-size: 0.9rem; margin-top: 1.2rem; }
 
+  /* ---------- what to expect: one banner style per kind of night ---------- */
+  .intro { color: var(--dim); }
+  .kinds { display: grid; gap: 2.5rem; margin-top: 1.5rem; }
+  .kind { scroll-margin-top: 2rem; }   /* links to a banner leave some air above it */
+  /* a clear divider between event types: a dashed rule with a centered "* * *", with equal space above and below */
+  .kind + .kind { position: relative; padding-top: 2.5rem; border-top: 1px dashed var(--dim); }
+  .kind + .kind::before { content: "* * *"; position: absolute; top: -0.8rem; left: 50%; transform: translateX(-50%);
+                          background: var(--bg); padding: 0 0.9rem; color: var(--dim); letter-spacing: 0.3em; line-height: 1.6; }
+  .kind h3 { font-weight: normal; letter-spacing: 0.12em; font-size: 1.7rem; line-height: 1.15; }
+  .kind .blurb { margin-top: 0.8rem; }
+
+  /* improv jam: a terminal window */
+  .banner.term { border: 1px solid var(--green); }
+  .term .term-bar { display: flex; justify-content: space-between; background: var(--green); color: var(--bg);
+                    text-shadow: none; padding: 0.15rem 0.6rem; font-size: 0.95rem; }
+  .term .term-body { padding: 1rem 1.1rem 1.2rem; }
+  .term .prompt { color: var(--dim); margin-top: 0.5rem; }
+
+  /* vinyl spin: a record sleeve with a spinning record */
+  .banner.vinyl { display: flex; align-items: center; gap: 1.4rem; border: 2px solid var(--dim); padding: 1rem 1.2rem;
+                  background: repeating-linear-gradient(135deg, transparent 0 10px, rgba(26, 128, 51, 0.14) 10px 11px); }
+  .vinyl .disc { flex: none; width: 104px; height: 104px; border-radius: 50%; position: relative;
+                 border: 2px solid var(--green); box-shadow: 0 0 14px rgba(51, 255, 102, 0.35);
+                 background:
+                   conic-gradient(from 0deg, transparent 0 18%, rgba(51, 255, 102, 0.28) 24%, transparent 30% 68%, rgba(51, 255, 102, 0.28) 74%, transparent 80%),
+                   repeating-radial-gradient(circle, #000 0 2px, #0b2a14 2px 3px);
+                 animation: spin 3.2s linear infinite; }
+  .vinyl .disc::before { content: ""; position: absolute; inset: 33%; border-radius: 50%; background: var(--green); }
+  .vinyl .disc::after { content: ""; position: absolute; inset: 47%; border-radius: 50%; background: var(--bg); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .vinyl .sub { color: var(--dim); display: block; margin-top: 0.3rem; }
+  .hw-label { color: var(--dim); margin-top: 1rem; }
+  .hw { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem 0.5rem; margin-top: 0.4rem; }
+  .hw li { border: 1px dashed var(--dim); padding: 0.05rem 0.6rem; color: var(--dim); font-size: 0.95rem; }
+  .hw-how { margin-top: 0.8rem; letter-spacing: 0.08em; }
+
+  /* artist showcase: a theater marquee with chasing bulbs */
+  .banner.marquee { border: 3px double var(--green); padding: 0.6rem 1rem 0.7rem; text-align: center; }
+  .marquee h3 { font-size: clamp(1.5rem, 6vw, 2.2rem); margin: 0.5rem 0 0.1rem; letter-spacing: 0.15em; }
+  .marquee .now { color: var(--dim); letter-spacing: 0.2em; margin-bottom: 0.5rem; }
+  .bulbs { position: relative; height: 14px; }
+  .bulbs::before, .bulbs::after { content: ""; position: absolute; inset: 0;
+                                   background: radial-gradient(circle, var(--green) 0 3px, transparent 4px) 0 50% / 24px 14px repeat-x;
+                                   animation: bulb 1s steps(1) infinite; }
+  .bulbs::after { background-position: 12px 50%; animation-delay: -0.5s; }   /* the other half of the bulbs blink in turn */
+  @keyframes bulb { 0% { opacity: 1; } 50% { opacity: 0.15; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vinyl .disc, .bulbs::before, .bulbs::after, .term .cursor { animation: none; }
+  }
+
   /* ---------- mailing list ---------- */
   form { display: block; }
 
@@ -353,12 +419,13 @@
   <section id="events">
     <h2>Upcoming Events</h2>
 
-    <!-- EDIT: one <li> per event. Copy/paste to add more.
+    <!-- EDIT: one <li> per event. Copy/paste to add more. Keep every event in this one list: once its date has
+         passed, the page moves it down to "Previous Events" by itself.
          data-event = a unique id for the ticket list (keep it the same once people start signing up)
          data-date  = the show date; ticket signups close automatically after this day
          data-time  = the show time, shown on the site and in the confirmation email ("" shows "time TBA")
          add data-tickets="off" to an event that doesn't need tickets -->
-    <ul class="events">
+    <ul class="events" id="upcoming-list">
       <li data-event="2026-11-01-hyperfried-halloween" data-date="2026-11-01">
         <span class="date">NOV 01 SUN</span>
         <span><span class="title">Hyperfried Halloween</span></span>
@@ -377,9 +444,87 @@
       </li>
       <li data-event="2026-11-20-jest-friends" data-date="2026-11-21" data-time="Doors 5:30 PM · Show 7–9 PM">
         <span class="date">NOV 21 SAT</span>
-        <span><span class="title">Jest Friends</span></span>
+        <span class="what"><span class="title">Jest Friends</span><a class="kind-tag" href="#kind-showcase" title="what's an artist showcase?">&#9733; Artist Showcase</a></span>
+      </li>
+      <li data-event="2026-11-29-friedsgiving" data-date="2026-11-29" data-tickets="off">
+        <span class="date">NOV 29 SUN</span>
+        <span class="what"><span class="title">Friedsgiving</span><span class="host">andreas birthday party</span></span>
+      </li>
+      <li data-event="2026-12-05-jazz-jam" data-date="2026-12-05" data-time="4:20 PM">
+        <span class="date">DEC 05 SAT</span>
+        <span class="what"><span class="title">Jazz Jam</span><span class="host">hosted by Lily</span></span>
+      </li>
+      <!-- data-where="email": the location is only sent in the ticket confirmation email (set in the Apps Script) -->
+      <li data-event="2026-12-29-desert-burn-set" data-date="2026-12-29" data-where="email">
+        <span class="date">DEC 29 TUE</span>
+        <span class="what"><span class="title">Desert Burn Set</span><span class="host">tentative &middot; location sent with your ticket</span></span>
+      </li>
+      <li data-event="2026-12-31-open-vinyl-night" data-date="2026-12-31">
+        <span class="date">DEC 31 THU</span>
+        <span class="what"><span class="title">Open Deck + Vinyl</span><span class="host">new year's eve &middot; late night set</span></span>
       </li>
     </ul>
+    <p class="venue-note"><a href="#what-to-expect">not sure what a night is like? see what to expect &darr;</a></p>
+  </section>
+
+  <!-- ===== WHAT TO EXPECT: one banner per kind of night. Copy an <article> to add another kind. ===== -->
+  <section id="what-to-expect">
+    <h2>What to Expect</h2>
+    <p class="intro">every night here is a little different. here are the kinds of nights we do.</p>
+
+    <div class="kinds">
+      <article class="kind" id="kind-showcase">
+        <div class="banner marquee">
+          <div class="bulbs" aria-hidden="true"></div>
+          <h3>Artist Showcase</h3>
+          <div class="now">&#9733; live on stage &#9733;</div>
+          <div class="bulbs" aria-hidden="true"></div>
+        </div>
+        <p class="blurb">Local artists take over our black box stage. Come and support!</p>
+      </article>
+
+      <article class="kind" id="kind-vinyl">
+        <div class="banner vinyl">
+          <div class="disc" aria-hidden="true"></div>
+          <div>
+            <h3>Open Deck + Vinyl</h3>
+            <span class="sub">33&#8531; rpm &middot; side A &middot; vinyl + any hardware welcome</span>
+          </div>
+        </div>
+        <p class="blurb">Open decks. Bring records, or whatever gear you want to play with (drum machine, synth, tape deck,
+          anything), plug in and take a turn. Nothing to play? Come hear what everyone else brought.</p>
+        <p class="hw-label">welcome at the decks:</p>
+        <ul class="hw">
+          <li>vinyl &amp; turntables</li>
+          <li>tapes, CDs &amp; minidisc</li>
+          <li>drum machines &amp; samplers</li>
+          <li>synths &amp; grooveboxes</li>
+          <li>pedals &amp; effects</li>
+          <li>anything with an output</li>
+        </ul>
+        <p class="hw-how">bring it &rarr; plug it in &rarr; take a turn</p>
+      </article>
+
+      <article class="kind" id="kind-improv">
+        <div class="banner term">
+          <div class="term-bar"><span>improv_jam.sh</span><span>[ _ ][ x ]</span></div>
+          <div class="term-body">
+            <h3>Open Improv Jam</h3>
+            <p class="prompt">$ ./jam --setlist none --rehearsal none<span class="cursor"></span></p>
+          </div>
+        </div>
+        <p class="blurb">No setlist. Bring an instrument and sit in with whoever's playing, or just hang out and listen. Some nights have a jazz or funk focus.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== PREVIOUS EVENTS (fills itself: any event above whose date has passed moves here, newest first) =====
+       To add photos or video for a past event, put a media block inside that event's <li> in the list above, e.g.
+         <div class="media"><img src="media/2026-11-12/crowd.jpg" alt="the crowd"><video src="media/2026-11-12/set.mp4" controls></video></div>
+       It shows up under the event's name once the event has moved down here. -->
+  <section id="previous" hidden>
+    <h2>Previous Events</h2>
+    <ul class="events past" id="past-list"></ul>
   </section>
 
   <!-- ===== MAILING LIST (saved to the Google Sheet's "Mailing List" tab) ===== -->
@@ -580,8 +725,28 @@
   // While it's empty the form runs in demo mode and only saves in this browser.
   const TICKETS_URL = "https://script.google.com/macros/s/AKfycbx-IotxS6hsf8zkwU7PBXEY42tzac-7g1bDZAR-2HA_WZIilZ3xu7Toj9g_84XIimjMGw/exec";
 
+  // upcoming vs previous: an event stays in "Upcoming" through the day of the show, then moves to "Previous Events"
+  (function () {
+    const now = new Date();
+    const todayLocal = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0") + "-" + String(now.getDate()).padStart(2, "0");
+    const upcoming = document.getElementById("upcoming-list"), past = document.getElementById("past-list");
+    [...upcoming.querySelectorAll("li[data-date]")]
+      .filter((li) => li.dataset.date < todayLocal)
+      .sort((a, b) => b.dataset.date.localeCompare(a.dataset.date))        // newest first
+      .forEach((li) => past.appendChild(li));
+    if (past.children.length) document.getElementById("previous").hidden = false;
+    if (!upcoming.querySelector("li")) {
+      const li = document.createElement("li");
+      li.className = "none";
+      li.innerHTML = 'nothing on the calendar right now. <a href="#mailing-list">join the mailing list</a> and we\'ll tell you when something\'s up.';
+      upcoming.appendChild(li);
+    }
+  })();
+
   const ticketRows = [...document.querySelectorAll(".events li[data-event]")];
-  const today = new Date().toISOString().slice(0, 10);
+  // today's date on the visitor's clock (not UTC), so tickets stay open until midnight on the day of the show
+  const _now = new Date();
+  const today = _now.getFullYear() + "-" + String(_now.getMonth() + 1).padStart(2, "0") + "-" + String(_now.getDate()).padStart(2, "0");
   const mine = JSON.parse(localStorage.getItem("hfTickets") || "{}");   // events this browser has a ticket for
   let counts = {}, capacity = {};
 
@@ -660,7 +825,7 @@
           localStorage.setItem("hfTickets", JSON.stringify(mine));
           msg.textContent = res.already
             ? "you're already on the list for this one!"
-            : "you're on the list, " + form.elements["name"].value.split(" ")[0] + "! just give your name at the door." + (TICKETS_URL ? "" : " (demo mode)");
+            : "you're on the list, " + form.elements["name"].value.split(" ")[0] + (li.dataset.where === "email" ? "! check your email for the location." : "! just give your name at the door.") + (TICKETS_URL ? "" : " (demo mode)");
           form.classList.remove("open");
           form.reset();
         } else {
